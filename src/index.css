@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply text-copa-dark antialiased;
+    font-size: 16px;
+  }
+
+  /* Torna range inputs mais bonitos em todos os browsers */
+  input[type='range'] {
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+  }
+
+  input[type='range']::-webkit-slider-runnable-track {
+    height: 6px;
+    border-radius: 9999px;
+    background: #E5E7EB;
+  }
+
+  input[type='range']::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #06A77D;
+    margin-top: -6px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    cursor: pointer;
+  }
+
+  input[type='range']::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #06A77D;
+    border: none;
+    cursor: pointer;
+  }
+}
