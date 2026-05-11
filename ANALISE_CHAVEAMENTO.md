@@ -1,1 +1,111 @@
-IyBQb3IgcXVlIG8gQnJhc2lsIHRlbSBtYWlzIGNoYW5jZXMgZGUgc2VyIGNhbXBlw6NvPwoKPiBVbWEgYW7DoWxpc2UgZG8gbW9kZWxvIEJyYWRsZXktVGVycnkgYXBsaWNhZG8gYW8gY2hhdmVhbWVudG8gZGEgQ29wYSAyMDI2CgotLS0KCiMjIE8gcGFyYWRveG8KCk5vIHNpbXVsYWRvciwgbyAqKkJyYXNpbCB0ZXJtaW5hIGNvbW8gZmF2b3JpdG8gYW8gdMOtdHVsbysqIGVzbW8gbsOjbyB0ZW5kbyBhIG1haW9yIEZvcnRlIEZpbmFsIGVudHJlIHRvZGFzIGFzIHNlbGXDp8O1ZXM6Cgp8IFNlbGXDp8OjbyAgICB8IEZvcsOnYSBGaW5hbCB8IFAoQ2FtcGXDo28pIHwKfC0tLS0tLS0tLS0tLXwtLS0tLS0tLS0tLS0tfC0tLS0tLS0tLS0tLXwKfCBJbmdsYXRlcnJhIHwgODIsMzUgICAgICAgfCB+OSw3JSAgICAgIHwKfCBGcmFuw6dhICAgICB8IDgxLDcwICAgICAgIHwgfjksNiUgICAgICB8CnwgRXNwYW5oYSAgICB8IDgwLDY3ICAgICAgIHwgfjEwLDAlICAgICB8CnwgKipCcmFzaWwqKiB8ICoqNzYsODcqKiAgIHwgKip+MTEsMCUqKiB8CnwgQWxlbWFuaGEgICB8IDc2LDA0ICAgICAgIHwgfjgsMiUgICAgICB8CnwgQXJnZW50aW5hICB8IDcwLDkwICAgICAgIHwgfjYsMiUgICAgICB8CgpQb3IgcXVlIHVtYSBzZWxlw6fDo28gY29tIGZvcsOnYSAqKm1lbm9yKiogZ2FuaGEgbWFpcyB2ZXplcz8KCi0tLQoKIyMgQ2F1c2EgMSDigJQgRm9yw6dhIGJydXRhIG7Do28gw6kgc3VmaWNpZW50ZSBlbSB0b3JuZWlvcwoKQSBwcm9iYWJpbGlkYWRlIGRlIHNlciAqKmNhbXBlw6NvKiogbsOjbyBkZXBlbmRlIHPDsyBkZSBzdWEgZm9yw6dhIGlzb2xhZGEg4oCUIGVsYSDDqSBvICoqcHJvZHV0byBkYXMgcHJvYmFiaWxpZGFkZXMgZGUgdmVuY2VyIGNhZGEgam9nbyoqIGFvIGxvbmdvIGRlIGF0w6kgNiBwYXJ0aWRhcyBlbGltaW5hdMOzcmlhcy4KCmBgYApQKENhbXBlw6NvKSA9IFAodmVuY2VyIFIzMikgw5cgUCh2ZW5jZXIgUjE2KSDDlyBQKHZlbmNlciBRRikgw5cgUCh2ZW5jZXIgU0YpIMOXIFAodmVuY2VyIEZpbmFsKQpgYGAKCk8gcXVlIGltcG9ydGEgbsOjbyDDqSBxdcOjbyBmb3J0ZSB2b2PDqiDDqSBlbSBnZXJhbCwgbWFzIHF1w6NvIGZvcnRlIHZvY8OqIMOpICoqZW0gcmVsYcOnw6NvIGEgY2FkYSBhZHZlcnPDoXJpbyBxdWUgZW5mcmVudGEgbmEgb3JkZW0gZG8gY2hhdmVhbWVudG8qKi4gRSBhw60gZW50cmEgbyBmYXRvciBkZWNpc2l2bzoKCi0tLQoKIyMgQ2F1c2EgMiDigJQgTyBjaGF2ZWFtZW50byBmYXZvcmVjZSBvIEJyYXNpbAoKTyBzb3J0ZWlvIGNvbG9jb3UgYXMgc2VsZcOnw7VlcyBub3Mgc2VndWludGVzIHF1YXJ0b3MgZG8gYnJhY2tldDoKCnwgUXVhcnRvIHwgVGltZXMgcHJpbmNpcGFpcyB8IE7DrXZlbCB8CnwtLS0tLS0tLXwtLS0tLS0tLS0tLS0tLS0tLXwtLS0tLS0tfAp8ICoqUXVhcnRlciAxKiogfCDwn4e6 8J+HuSBCcmFzaWwsIPCfh7rwn4e4IEVVQSB8IFByb21ldGlkbyBkbyBtdW5kbyB8IHwKCk8gc29ydGVpbyBjb2xvY291IGFzIHNlbGXDp8O1ZXMgbm9zIHNlZ3VpbnRlcyBxdWFydG9zIGRvIGJyYWNrZXQ6Cgp8IFF1YXJ0byB8IFRpbWVzIHByaW5jaXBhaXMgfCBOw612ZWwgfAp8LS0tLS0tLS18LS0tLS0tLS0tLS0tLS0tLS18LS0tLS0tLXwKfCAqKlF1YXJ0ZXIgMSoqIHwg8J+HuvCfh7kgQnJhc2lsLCDwn4e68J+HuCBFVUEsIPCfh43wn4e5IE3DqXhpY28sIPCfh4Dwn4e6IENhbmFkw6EgfCDiiaFilaFilaIgfAp8ICoqUXVhcnRlciAyKiogfCDwn4em8J+HuyBBbGVtYW5oYSwg8J+HrfCfh7sgSG9sYW5kYSwg8J+HpvCfh7kgQsOpbGdpY2EsIPCfh6vwn4e4IEVzcGFuaGEgfCDiiaFilaFilaWiiaYgfAp8ICoqUXVhcnRlciAzKiogfCDwn4er8J+HuiBGcmFuw6dhLCDwn4e38J+HuSBBcmdlbnRpbmEsIPCfh7Dwn4e4IFBvcnR1Z2FsLCDwn4+E77Sj4oGeIOC2ieG1ouC2j+G1oiDwn4+E77Sj4oGeIOC2ieG1ouC2j+G1oiBJbmdsYXRlcnJhIHwg4omGYqWVYqWVYqWVYqWVYqWVIHwKfCBRdWFydGVyIDQgfCA4IG1lbGhvcmVzIDPCuXMgY29sb2NhZG9zIHwg4omGYqWVIHwKCk8gcHJvYmxlbWEgY2VudHJhbDogKipGcmFuw6dhIGUgSW5nbGF0ZXJyYSDigJQgb3MgZG9pcyB0aW1lcyBtYWlzIGZvcnRlcyDigJQgY2HDrXJhbSBubyBtZXNtbyBxdWFydG8gZG8gYnJhY2tldCoqLiBJc3NvIHNpZ25pZmljYSBxdWUgKip1bWEgZGVsYXMgw6kgZWxpbWluYWRhIGFudGVzIGRhIHNlbWlmaW5hbCoqLCBzZW1wcmUuIEVsYXMgc2UgZWxpbWluYW0gbXV0dWFtZW50ZS4KCk8gKipCcmFzaWwgZXN0w6Agbm8gUXVhcnRlciAxKiosIG8gcXVhcnRvIGNvbSBvcyBhZHZlcnPDoXJpb3MgbWFpcyBmcmFjb3MgZG9zIHByaW5jaXBhaXMgZmF2b3JpdG9zLgoKLS0tCgojIyBFeGVtcGxvIG51bcOpcmljbwoKIyMjIENhbWluaG8gZG8gQnJhc2lsIGF0w6kgYSBmaW5hbAoKfCBSb2RhZGEgfCBBZHZlcnPDoXJpbyB0w61waWNvIHwgRm9yw6dhIGRvIGFkdmVyc8OhcmlvIHwgUChCcmFzaWwgdmVuY2VyKSB8CnwtLS0tLS0tLXwtLS0tLS0tLS0tLS0tLS0tLXwtLS0tLS0tLS0tLS0tLS0tLS0tLS18LS0tLS0tLS0tLS0tLS0tLS18CnwgUjMyICAgIHwgRVVBICAgICAgICAgICAgICB8IDQxLDkgICAgICAgICAgICAgICAgfCDiiaggNjUlICAgICAgICAgICB8CnwgUjE2ICAgIHwgTcOpeGljbyAgICAgICAgICB8IDM3LDggICAgICAgICAgICAgICAgfCDiiaggNjclICAgICAgICAgICB8CnwgUUYgICAgIHwgQ2FuYWTDoSAgICAgICAgICB8IDI5LDcgICAgICAgICAgICAgICAgfCDiiaggNzIlICAgICAgICAgICB8CnwgU0YgICAgIHwgRXNwYW5oYSAgICAgICAgICB8IDgwLDcgICAgICAgICAgICAgICAgfCDiiaggNDklICAgICAgICAgICB8CnwgKipQKGNoZWdhciDDoCBGaW5hbCkqKiB8IHwgfCAqKuKJiCAxNiUqKiB8CgojIyMgQ2FtaW5obyBkYSBJbmdsYXRlcnJhIGF0w6kgYSBmaW5hbAoKfCBSb2RhZGEgfCBBZHZlcnPDoXJpbyB0w61waWNvIHwgRm9yw6dhIGRvIGFkdmVyc8OhcmlvIHwgUChJbmdsYXRlcnJhIHZlbmNlcikgfAp8LS0tLS0tLS18LS0tLS0tLS0tLS0tLS0tLS18LS0tLS0tLS0tLS0tLS0tLS0tLS0tfC0tLS0tLS0tLS0tLS0tLS0tLS0tLXwKfCBSMzIgICAgfCBDb2zDtG1iaWEgICAgICAgICB8IDQyLDAgICAgICAgICAgICAgICAgfCDiiaggNjYlICAgICAgICAgICAgICAgfAp8IFIxNiAgICB8IFBvcnR1Z2FsICAgICAgICAgfCA1OSw3ICAgICAgICAgICAgICAgIHwg4omIIDU4JSAgICAgICAgICAgICAgIHwKfCBRRiAgICAgfCBBcmdlbnRpbmEgICAgICAgICB8IDcwLDkgICAgICAgICAgICAgICAgfCDiiaggNTQlICAgICAgICAgICAgICAgfAp8IFNGICAgICB8IEZyYW7Dp2EgICAgICAgICAgIHwgODEsNyAgICAgICAgICAgICAgICB8IOKJiCA1MCUgICAgICAgICAgICAgICB8CnwgKipQKGNoZWdhciDDoCBGaW5hbCkqKiB8IHwgfCAqKuKJiCAxMCUqKiB8Cgo+ICoqQnJhc2lsIGNoZWdhIMOgIGZpbmFsIOKJiCA2MCUgbWFpcyB2ZXplcyBxdWUgYSBJbmdsYXRlcnJhKiosIGFwZXNhciBkZSBzZXIgbWVub3MgZm9ydGUuIE8gY2FtaW5obyBpbXBvcnRhIHRhbnRvIHF1YW50byBhIGZvcsOnYS4KCi0tLQoKIyMgQSBsacOnw6NvIG1hdGVtw6F0aWNhCgpJc3NvIGRlbW9uc3RyYSB1bSBwcmluY8OtcGlvIGltcG9ydGFudGUgZW0gKipwcm9iYWJpbGlkYWRlIGVtIHRvcm5laW9zIGVsaW1pbmF0w7NyaW9zKio6Cgo+IF8iQSBwcm9iYWJpbGlkYWRlIGRlIHZlbmNlciB1bSB0b3JuZWlvIG7Do28gw6kgbW9ub3TDtG5pY2EgZW0gcmVsYcOnw6NvIMOgIGZvcsOnYSBkbyB0aW1lIOKAlCBvIGNoYXZlYW1lbnRvIHBvZGUgcmV2ZXJ0ZXIgYSBvcmRlbSBlc3BlcmFkYS4iXwoKTm8gZnV0ZWJvbCByZWFsLCBlc3NlIGVmZWl0byDDqSBhbXBsYW1lbnRlIHJlY29uaGVjaWRvOiAqKm8gc29ydGVpbyBkYSBDb3BhIHBvZGUgdmFsZXIgdGFudG8gcXVhbnRvIG8gcmFua2luZyBkYSBzZWxlw6fDo28qKi4gVGltZXMgZmF2b3JpdG9zIMOgcyB2ZXplcyBuw6NvIGNoZWdhbSDDoCBmaW5hbCBqdXN0YW1lbnRlIHBvcnF1ZSBjYWVtIG5vIG1lc21vIGxhZG8gZG8gY2hhdmVhbWVudG8gcXVlIG91dHJ
+# Por que o Brasil tem mais chances de ser campeão?
+
+> Uma análise do modelo Bradley-Terry aplicado ao chaveamento da Copa 2026
+
+---
+
+## O paradoxo
+
+No simulador, o **Brasil termina como favorito ao título** mesmo não tendo a maior Força Final entre todas as seleções:
+
+| Seleção    | Força Final | P(Campeão) |
+|------------|-------------|------------|
+| Inglaterra | 82,75       | ~9,7%      |
+| França     | 81,70       | ~9,6%      |
+| Espanha    | 80,67       | ~10,0%     |
+| **Brasil** | **76,87**   | **~11,0%** |
+| Alemanha   | 76,04       | ~8,2%      |
+| Argentina  | 70,90       | ~6,2%      |
+
+Por que uma seleção com força **menor** ganha mais vezes?
+
+---
+
+## Causa 1 — Força bruta não é suficiente em torneios
+
+A probabilidade de ser **campeão** não depende só de sua força isolada — ela é o **produto das probabilidades de vencer cada jogo** ao longo de até 6 partidas eliminatórias.
+
+```
+P(Campeão) = P(vencer R32) × P(vencer R16) × P(vencer QF) × P(vencer SF) × P(vencer Final)
+```
+
+O que importa não é quão forte você é em geral, mas quão forte você é **em relação a cada adversário que enfrenta na ordem do chaveamento**. E aí entra o fator decisivo:
+
+---
+
+## Causa 2 — O chaveamento favorece o Brasil
+
+O sorteio colocou as seleções nos seguintes quartos do bracket:
+
+| Quarto | Times principais | Nível |
+|--------|-----------------|-------|
+| **Quarter 1** | 🇧🇷 Brasil, 🇺🇸 EUA, 🇲🇽 México, 🇨🇦 Canadá | ⭐⭐ |
+| **Quarter 2** | 🇩🇪 Alemanha, 🇳🇱 Holanda, 🇧🇪 Bélgica, 🇪🇸 Espanha | ⭐⭐⭐⭐ |
+| **Quarter 3** | 🇫🇷 França, 🇦🇷 Argentina, 🇵🇹 Portugal, 🏴󠁧󠁢󠁥󠁮󠁧󠁿 Inglaterra | ⭐⭐⭐⭐⭐ |
+| Quarter 4 | 8 melhores 3ºs colocados | ⭐ |
+
+O problema central: **França e Inglaterra — os dois times mais fortes — caíram no mesmo quarto do bracket**. Isso significa que **uma delas é eliminada antes da semifinal**, sempre. Elas se eliminam mutuamente.
+
+O **Brasil está no Quarter 1**, o quarto com os adversários mais fracos dos principais favoritos.
+
+---
+
+## Exemplo numérico
+
+### Caminho do Brasil até a final
+
+| Rodada | Adversário típico | Força do adversário | P(Brasil vencer) |
+|--------|------------------|---------------------|-----------------|
+| R32    | EUA              | 41,9                | ≈ 65%           |
+| R16    | México           | 37,8                | ≈ 67%           |
+| QF     | Canadá           | 29,7                | ≈ 72%           |
+| SF     | Espanha          | 80,7                | ≈ 49%           |
+| **P(chegar à Final)** | | | **≈ 16%** |
+
+### Caminho da Inglaterra até a final
+
+| Rodada | Adversário típico | Força do adversário | P(Inglaterra vencer) |
+|--------|------------------|---------------------|---------------------|
+| R32    | Colômbia         | 42,0                | ≈ 66%               |
+| R16    | Portugal         | 59,7                | ≈ 58%               |
+| QF     | Argentina        | 70,9                | ≈ 54%               |
+| SF     | França           | 81,7                | ≈ 50%               |
+| **P(chegar à Final)** | | | **≈ 10%** |
+
+> **Brasil chega à final ≈ 60% mais vezes que a Inglaterra**, apesar de ser menos forte. O caminho importa tanto quanto a força.
+
+---
+
+## A lição matemática
+
+Isso demonstra um princípio importante em **probabilidade em torneios eliminatórios**:
+
+> _"A probabilidade de vencer um torneio não é monotônica em relação à força do time — o chaveamento pode reverter a ordem esperada."_
+
+No futebol real, esse efeito é amplamente reconhecido: **o sorteio da Copa pode valer tanto quanto o ranking da seleção**. Times favoritos às vezes não chegam à final justamente porque caem no mesmo lado do chaveamento que outros favoritos.
+
+---
+
+## Como verificar no simulador
+
+1. **Ajuste as forças**: abra o painel **"Editar Forças dos Times"** e iguale a força do Brasil à da França (ambas em ~81,7)
+2. **Rode 10.000 simulações**
+3. **Observe**: o Brasil ainda terá probabilidade de título maior que a França, pois o chaveamento não mudou
+
+Isso prova que o efeito é **estrutural (chaveamento)**, não uma consequência das forças.
+
+---
+
+## Conclusão
+
+| Fator | Impacto |
+|-------|---------|
+| Força Final (Bradley-Terry) | Determina quem vence **cada jogo** |
+| Posição no chaveamento | Determina **quem você enfrenta** em cada rodada |
+| **Combinação dos dois** | Determina quem é **favorito ao título** |
+
+O modelo Bradley-Terry é matematicamente justo — cada jogo é calculado corretamente. Mas o sorteio que definiu os grupos e o chaveamento cria **caminhos assimétricos** ao título. Isso não é um erro do modelo: é exatamente o que acontece no futebol real, e é por isso que o sorteio da Copa do Mundo é tão aguardado.
+
+---
+
+*Análise gerada com base nos resultados do simulador Monte Carlo com 10.000 simulações. Os percentuais podem variar ligeiramente a cada rodada de simulações devido à aleatoriedade inerente ao método.*
