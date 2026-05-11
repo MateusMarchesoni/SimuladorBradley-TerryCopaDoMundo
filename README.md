@@ -1,0 +1,1 @@
+# SimuladorBradley-TerryCopaDoMundo
