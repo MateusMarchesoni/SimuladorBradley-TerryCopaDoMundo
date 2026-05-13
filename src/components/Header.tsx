@@ -7,18 +7,19 @@ export function Header() {
         <Trophy className="w-9 h-9 text-white drop-shadow-md flex-shrink-0" strokeWidth={2.5} />
         <div>
           <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight leading-tight">
-            Simulador Bradley-Terry
+            Simulador Copa do Mundo 2026
           </h1>
           <p className="text-base sm:text-lg font-semibold opacity-90">
-            Copa do Mundo 2026 — Monte Carlo
+            Bradley-Terry & Poisson — Monte Carlo
           </p>
         </div>
       </div>
       <div className="max-w-6xl mx-auto mt-3 px-1">
         <p className="text-sm sm:text-base opacity-85 leading-snug">
-          O modelo <strong>Bradley-Terry</strong> calcula a chance de cada time vencer:{' '}
-          <span className="font-mono bg-white/20 px-1 rounded">P(A×B) = Força_A ÷ (Força_A + Força_B)</span>.
-          Rodamos <strong>milhares de Copas virtuais</strong> para estimar as probabilidades reais.
+          Dois modelos probabilísticos para simular a Copa: <strong>Bradley-Terry</strong> compara
+          forças relativas para decidir o vencedor; <strong>Poisson</strong> sorteia gols a partir
+          de médias históricas de ataque e defesa. Rodamos <strong>milhares de Copas virtuais</strong>
+          para estimar as probabilidades reais.
         </p>
       </div>
     </header>
