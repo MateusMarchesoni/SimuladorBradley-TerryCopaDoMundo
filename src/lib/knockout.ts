@@ -23,7 +23,7 @@ export interface KnockoutResult {
 //
 // qualifiers[0..23] = top-2 de cada grupo na ordem A,B,C,...,L (par de grupo = par A,B = [0,1])
 // qualifiers[24..31] = 8 melhores terceiros
-function buildR32Bracket(qualifiers: number[]): [number, number][] {
+export function buildR32Bracket(qualifiers: number[]): [number, number][] {
   // índices dentro de qualifiers para cada posição de grupo
   // grupo g: 1º = qualifiers[g*2], 2º = qualifiers[g*2+1]
   const first = (g: number) => qualifiers[g * 2];
