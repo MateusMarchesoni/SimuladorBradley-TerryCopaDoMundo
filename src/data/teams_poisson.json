@@ -3,384 +3,384 @@
     "name": "Inglaterra",
     "force": 82.7457,
     "matches": 74,
-    "lambda_gf": 1.3899,
-    "lambda_ga": 0.9088,
+    "lambda_atk": 1.962664,
+    "lambda_def": 0.721318,
     "source": "historical"
   },
   {
     "name": "França",
     "force": 81.7011,
     "matches": 73,
-    "lambda_gf": 1.8425,
-    "lambda_ga": 1.1516,
+    "lambda_atk": 1.951475,
+    "lambda_def": 0.725453,
     "source": "historical"
   },
   {
     "name": "Espanha",
     "force": 80.6668,
     "matches": 67,
-    "lambda_gf": 1.5942,
-    "lambda_ga": 1.1071,
+    "lambda_atk": 1.940319,
+    "lambda_def": 0.729624,
     "source": "historical"
   },
   {
     "name": "Brasil",
     "force": 76.8679,
     "matches": 114,
-    "lambda_gf": 2.0561,
-    "lambda_ga": 0.9369,
+    "lambda_atk": 1.898654,
+    "lambda_def": 0.745636,
     "source": "historical"
   },
   {
     "name": "Alemanha",
     "force": 76.0353,
     "matches": 112,
-    "lambda_gf": 2.0486,
-    "lambda_ga": 1.1479,
+    "lambda_atk": 1.889371,
+    "lambda_def": 0.749299,
     "source": "historical"
   },
   {
     "name": "Argentina",
     "force": 70.8988,
     "matches": 88,
-    "lambda_gf": 1.7083,
-    "lambda_ga": 1.1351,
+    "lambda_atk": 1.830830,
+    "lambda_def": 0.773258,
     "source": "historical"
   },
   {
     "name": "Portugal",
     "force": 59.6625,
     "matches": 35,
-    "lambda_gf": 1.7237,
-    "lambda_ga": 1.1585,
+    "lambda_atk": 1.694050,
+    "lambda_def": 0.835692,
     "source": "historical"
   },
   {
     "name": "Holanda",
     "force": 56.2879,
     "matches": 55,
-    "lambda_gf": 1.7263,
-    "lambda_ga": 0.9351,
+    "lambda_atk": 1.650240,
+    "lambda_def": 0.857877,
     "source": "historical"
   },
   {
     "name": "Bélgica",
     "force": 49.6224,
     "matches": 51,
-    "lambda_gf": 1.3381,
-    "lambda_ga": 1.435,
+    "lambda_atk": 1.559249,
+    "lambda_def": 0.907940,
     "source": "historical"
   },
   {
     "name": "Uruguai",
     "force": 49.5308,
     "matches": 59,
-    "lambda_gf": 1.4919,
-    "lambda_ga": 1.274,
+    "lambda_atk": 1.557953,
+    "lambda_def": 0.908695,
     "source": "historical"
   },
   {
     "name": "Marrocos",
     "force": 48.1632,
     "matches": 23,
-    "lambda_gf": 0.86,
-    "lambda_ga": 1.161,
+    "lambda_atk": 1.538446,
+    "lambda_def": 0.920217,
     "source": "historical"
   },
   {
     "name": "Senegal",
     "force": 45.779,
     "matches": 12,
-    "lambda_gf": 1.3187,
-    "lambda_ga": 1.4011,
+    "lambda_atk": 1.503697,
+    "lambda_def": 0.941482,
     "source": "historical"
   },
   {
     "name": "Croácia",
     "force": 42.4853,
     "matches": 30,
-    "lambda_gf": 1.4176,
-    "lambda_ga": 1.0879,
+    "lambda_atk": 1.454012,
+    "lambda_def": 0.973654,
     "source": "historical"
   },
   {
     "name": "Colômbia",
     "force": 41.9671,
     "matches": 22,
-    "lambda_gf": 1.4385,
-    "lambda_ga": 1.3486,
+    "lambda_atk": 1.446004,
+    "lambda_def": 0.979046,
     "source": "historical"
   },
   {
     "name": "Estados Unidos",
     "force": 41.9403,
     "matches": 37,
-    "lambda_gf": 1.0692,
-    "lambda_ga": 1.7642,
+    "lambda_atk": 1.445588,
+    "lambda_def": 0.979327,
     "source": "historical"
   },
   {
     "name": "Turquia",
     "force": 41.1731,
     "matches": 10,
-    "lambda_gf": 1.978,
-    "lambda_ga": 1.6813,
+    "lambda_atk": 1.433628,
+    "lambda_def": 0.987497,
     "source": "historical"
   },
   {
     "name": "Suíça",
     "force": 39.6718,
     "matches": 41,
-    "lambda_gf": 1.3267,
-    "lambda_ga": 1.7609,
+    "lambda_atk": 1.409864,
+    "lambda_def": 1.004142,
     "source": "historical"
   },
   {
     "name": "Equador",
     "force": 38.8879,
     "matches": 13,
-    "lambda_gf": 1.0651,
-    "lambda_ga": 1.0651,
+    "lambda_atk": 1.397259,
+    "lambda_def": 1.013201,
     "source": "historical"
   },
   {
     "name": "Japão",
     "force": 38.7138,
     "matches": 25,
-    "lambda_gf": 0.989,
-    "lambda_ga": 1.3055,
+    "lambda_atk": 1.394441,
+    "lambda_def": 1.015249,
     "source": "historical"
   },
   {
     "name": "Noruega",
     "force": 38.5054,
     "matches": 8,
-    "lambda_gf": 0.8654,
-    "lambda_ga": 0.989,
+    "lambda_atk": 1.391058,
+    "lambda_def": 1.017718,
     "source": "historical"
   },
   {
     "name": "México",
     "force": 37.7852,
     "matches": 60,
-    "lambda_gf": 1.022,
-    "lambda_ga": 1.6648,
+    "lambda_atk": 1.379289,
+    "lambda_def": 1.026401,
     "source": "historical"
   },
   {
     "name": "Áustria",
     "force": 35.8654,
     "matches": 29,
-    "lambda_gf": 1.4664,
-    "lambda_ga": 1.6029,
+    "lambda_atk": 1.347301,
+    "lambda_def": 1.050771,
     "source": "historical"
   },
   {
     "name": "Costa do Marfim",
     "force": 35.163,
     "matches": 9,
-    "lambda_gf": 1.4286,
-    "lambda_ga": 1.5384,
+    "lambda_atk": 1.335362,
+    "lambda_def": 1.060165,
     "source": "historical"
   },
   {
     "name": "Argélia",
     "force": 33.0996,
     "matches": 13,
-    "lambda_gf": 0.989,
-    "lambda_ga": 1.4455,
+    "lambda_atk": 1.299513,
+    "lambda_def": 1.089411,
     "source": "historical"
   },
   {
     "name": "Coreia do Sul",
     "force": 32.2673,
     "matches": 38,
-    "lambda_gf": 1.015,
-    "lambda_ga": 2.0301,
+    "lambda_atk": 1.284706,
+    "lambda_def": 1.101968,
     "source": "historical"
   },
   {
     "name": "Suécia",
     "force": 31.7486,
     "matches": 51,
-    "lambda_gf": 1.5514,
-    "lambda_ga": 1.4156,
+    "lambda_atk": 1.275371,
+    "lambda_def": 1.110033,
     "source": "historical"
   },
   {
     "name": "Irã",
     "force": 31.6849,
     "matches": 18,
-    "lambda_gf": 0.7143,
-    "lambda_ga": 1.7033,
+    "lambda_atk": 1.274219,
+    "lambda_def": 1.111037,
     "source": "historical"
   },
   {
     "name": "Canadá",
     "force": 29.7282,
     "matches": 6,
-    "lambda_gf": 0.3297,
-    "lambda_ga": 1.978,
+    "lambda_atk": 1.238187,
+    "lambda_def": 1.143368,
     "source": "historical"
   },
   {
     "name": "Egito",
     "force": 29.6718,
     "matches": 7,
-    "lambda_gf": 0.7064,
-    "lambda_ga": 1.6954,
+    "lambda_atk": 1.237130,
+    "lambda_def": 1.144346,
     "source": "historical"
   },
   {
     "name": "Austrália",
     "force": 29.2131,
     "matches": 20,
-    "lambda_gf": 0.8407,
-    "lambda_ga": 1.8297,
+    "lambda_atk": 1.228487,
+    "lambda_def": 1.152397,
     "source": "historical"
   },
   {
     "name": "Panamá",
     "force": 25.9197,
     "matches": 3,
-    "lambda_gf": 0.6593,
-    "lambda_ga": 3.6263,
+    "lambda_atk": 1.164110,
+    "lambda_def": 1.216126,
     "source": "historical"
   },
   {
     "name": "República Tcheca",
     "force": 25.8119,
     "matches": 33,
-    "lambda_gf": 1.4086,
-    "lambda_ga": 1.4685,
+    "lambda_atk": 1.161929,
+    "lambda_def": 1.218409,
     "source": "historical"
   },
   {
     "name": "Escócia",
     "force": 25.2974,
     "matches": 23,
-    "lambda_gf": 1.075,
-    "lambda_ga": 1.763,
+    "lambda_atk": 1.151449,
+    "lambda_def": 1.229498,
     "source": "historical"
   },
   {
     "name": "Paraguai",
     "force": 25.1452,
     "matches": 27,
-    "lambda_gf": 1.0989,
-    "lambda_ga": 1.3919,
+    "lambda_atk": 1.148326,
+    "lambda_def": 1.232841,
     "source": "historical"
   },
   {
     "name": "RD do Congo",
     "force": 22.7783,
     "matches": 3,
-    "lambda_gf": 0.8,
-    "lambda_ga": 2.3,
+    "lambda_atk": 1.098361,
+    "lambda_def": 1.288924,
     "source": "estimate"
   },
   {
     "name": "Tunísia",
     "force": 21.2252,
     "matches": 18,
-    "lambda_gf": 0.7692,
-    "lambda_ga": 1.4286,
+    "lambda_atk": 1.064005,
+    "lambda_def": 1.330542,
     "source": "historical"
   },
   {
     "name": "Uzbequistão",
     "force": 18.6793,
     "matches": 0,
-    "lambda_gf": 0.55,
-    "lambda_ga": 1.85,
+    "lambda_atk": 1.004553,
+    "lambda_def": 1.409288,
     "source": "estimate"
   },
   {
     "name": "Catar",
     "force": 15.2001,
     "matches": 3,
-    "lambda_gf": 0.3297,
-    "lambda_ga": 2.3077,
+    "lambda_atk": 0.915570,
+    "lambda_def": 1.546255,
     "source": "historical"
   },
   {
     "name": "Iraque",
     "force": 14.279,
     "matches": 3,
-    "lambda_gf": 0.3297,
-    "lambda_ga": 1.3187,
+    "lambda_atk": 0.890173,
+    "lambda_def": 1.590369,
     "source": "historical"
   },
   {
     "name": "África do Sul",
     "force": 13.4071,
     "matches": 9,
-    "lambda_gf": 1.2088,
-    "lambda_ga": 1.7582,
+    "lambda_atk": 0.865289,
+    "lambda_def": 1.636106,
     "source": "historical"
   },
   {
     "name": "Bósnia",
     "force": 13.1719,
     "matches": 3,
-    "lambda_gf": 1.3187,
-    "lambda_ga": 1.3187,
+    "lambda_atk": 0.858425,
+    "lambda_def": 1.649188,
     "source": "historical"
   },
   {
     "name": "Arábia Saudita",
     "force": 12.6019,
     "matches": 19,
-    "lambda_gf": 0.7287,
-    "lambda_ga": 2.2903,
+    "lambda_atk": 0.841505,
+    "lambda_def": 1.682348,
     "source": "historical"
   },
   {
     "name": "Jordânia",
     "force": 11.3714,
     "matches": 0,
-    "lambda_gf": 1.1,
-    "lambda_ga": 1.4,
+    "lambda_atk": 0.803483,
+    "lambda_def": 1.761959,
     "source": "estimate"
   },
   {
     "name": "Gana",
     "force": 10.711,
     "matches": 15,
-    "lambda_gf": 1.1868,
-    "lambda_ga": 1.5165,
+    "lambda_atk": 0.782139,
+    "lambda_def": 1.810041,
     "source": "historical"
   },
   {
     "name": "Cabo Verde",
     "force": 9.2556,
     "matches": 0,
-    "lambda_gf": 0.85,
-    "lambda_ga": 2.63,
+    "lambda_atk": 0.732390,
+    "lambda_def": 1.932991,
     "source": "estimate"
   },
   {
     "name": "Haiti",
     "force": 2.9161,
     "matches": 3,
-    "lambda_gf": 0.6593,
-    "lambda_ga": 4.6153,
+    "lambda_atk": 0.435533,
+    "lambda_def": 3.250505,
     "source": "historical"
   },
   {
     "name": "Curaçau",
     "force": 2.7204,
     "matches": 0,
-    "lambda_gf": 0.6,
-    "lambda_ga": 2.3,
+    "lambda_atk": 0.422129,
+    "lambda_def": 3.353723,
     "source": "estimate"
   },
   {
     "name": "Nova Zelândia",
     "force": 1.1536,
     "matches": 6,
-    "lambda_gf": 0.6593,
-    "lambda_ga": 2.3077,
+    "lambda_atk": 0.286936,
+    "lambda_def": 4.933863,
     "source": "historical"
   }
 ]

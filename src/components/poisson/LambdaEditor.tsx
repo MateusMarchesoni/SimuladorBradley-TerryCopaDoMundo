@@ -39,7 +39,7 @@ export function LambdaEditor({ lambdas, onLambdasChange, onClose }: Props) {
   const [importError, setImportError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleSlider = (idx: number, field: 'gf' | 'ga', value: number) => {
+  const handleSlider = (idx: number, field: 'atk' | 'def', value: number) => {
     const nextArr = [...lambdas[field]];
     nextArr[idx] = value;
     onLambdasChange({ ...lambdas, [field]: nextArr });
@@ -51,9 +51,9 @@ export function LambdaEditor({ lambdas, onLambdasChange, onClose }: Props) {
 
   const handleExport = () => {
     const rows = [
-      'Nome,λ_gf,λ_ga,Bandeira',
+      'Nome,λ_atk,λ_def,Bandeira',
       ...POISSON_TEAMS.map((t, i) =>
-        `${t.name},${lambdas.gf[i].toFixed(4)},${lambdas.ga[i].toFixed(4)},${flagForName(t.name)}`
+        `${t.name},${lambdas.atk[i].toFixed(6)},${lambdas.def[i].toFixed(6)},${flagForName(t.name)}`
       ),
     ];
     const blob = new Blob([rows.join('\n')], { type: 'text/csv;charset=utf-8;' });
@@ -75,27 +75,27 @@ export function LambdaEditor({ lambdas, onLambdasChange, onClose }: Props) {
       const text = ev.target?.result as string;
       const lines = text.trim().split('\n');
       const start = lines[0].toLowerCase().includes('nome') ? 1 : 0;
-      const nextGf = [...lambdas.gf];
-      const nextGa = [...lambdas.ga];
+      const nextAtk = [...lambdas.atk];
+      const nextDef = [...lambdas.def];
       const warnings: string[] = [];
 
       for (let i = start; i < lines.length; i++) {
         const parts = lines[i].split(',');
         if (parts.length < 3) continue;
         const name = parts[0].trim();
-        const valGf = parseFloat(parts[1].trim());
-        const valGa = parseFloat(parts[2].trim());
+        const valAtk = parseFloat(parts[1].trim());
+        const valDef = parseFloat(parts[2].trim());
         const idx = POISSON_TEAM_INDEX.get(name);
         if (idx === undefined) { warnings.push(name); continue; }
-        if (isNaN(valGf) || valGf < 0 || isNaN(valGa) || valGa < 0) {
+        if (isNaN(valAtk) || valAtk < 0 || isNaN(valDef) || valDef < 0) {
           warnings.push(name + ' (valor inválido)');
           continue;
         }
-        nextGf[idx] = Math.min(valGf, MAX_LAMBDA);
-        nextGa[idx] = Math.min(valGa, MAX_LAMBDA);
+        nextAtk[idx] = Math.min(valAtk, MAX_LAMBDA);
+        nextDef[idx] = Math.min(valDef, MAX_LAMBDA);
       }
 
-      onLambdasChange({ gf: nextGf, ga: nextGa });
+      onLambdasChange({ atk: nextAtk, def: nextDef });
       if (warnings.length > 0) {
         setImportError(`Times não encontrados ou inválidos: ${warnings.join(', ')}`);
       }
@@ -170,9 +170,9 @@ export function LambdaEditor({ lambdas, onLambdasChange, onClose }: Props) {
 
         <div className="px-3 py-2 border-b border-gray-100">
           <p className="text-[11px] text-gray-500 mb-2 leading-snug">
-            <span className="font-semibold text-copa-green">λ_gf</span> = gols feitos por jogo &nbsp;·&nbsp;
-            <span className="font-semibold text-copa-red">λ_ga</span> = gols sofridos por jogo.
-            <span className="block">Em um confronto A×B: λ_A = (A.gf + B.ga)/2.</span>
+            <span className="font-semibold text-copa-green">λ_atk</span> = força ofensiva &nbsp;·&nbsp;
+            <span className="font-semibold text-copa-red">λ_def</span> = fragilidade defensiva.
+            <span className="block">Em um confronto A×B: λ_A = λ_atk(A) × λ_def(B) / μ.</span>
           </p>
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
@@ -218,9 +218,9 @@ export function LambdaEditor({ lambdas, onLambdasChange, onClose }: Props) {
 
                         <div className="mb-2">
                           <div className="flex items-center justify-between mb-1">
-                            <span className="text-[11px] font-semibold text-copa-green">λ_gf</span>
+                            <span className="text-[11px] font-semibold text-copa-green">λ_atk</span>
                             <span className="text-xs font-bold text-copa-green w-12 text-right font-mono">
-                              {lambdas.gf[idx].toFixed(2)}
+                              {lambdas.atk[idx].toFixed(2)}
                             </span>
                           </div>
                           <input
@@ -228,17 +228,17 @@ export function LambdaEditor({ lambdas, onLambdasChange, onClose }: Props) {
                             min={0}
                             max={MAX_LAMBDA}
                             step={0.01}
-                            value={lambdas.gf[idx]}
-                            onChange={e => handleSlider(idx, 'gf', parseFloat(e.target.value))}
+                            value={lambdas.atk[idx]}
+                            onChange={e => handleSlider(idx, 'atk', parseFloat(e.target.value))}
                             className="w-full h-2 accent-copa-green cursor-pointer"
                           />
                         </div>
 
                         <div>
                           <div className="flex items-center justify-between mb-1">
-                            <span className="text-[11px] font-semibold text-copa-red">λ_ga</span>
+                            <span className="text-[11px] font-semibold text-copa-red">λ_def</span>
                             <span className="text-xs font-bold text-copa-red w-12 text-right font-mono">
-                              {lambdas.ga[idx].toFixed(2)}
+                              {lambdas.def[idx].toFixed(2)}
                             </span>
                           </div>
                           <input
@@ -246,8 +246,8 @@ export function LambdaEditor({ lambdas, onLambdasChange, onClose }: Props) {
                             min={0}
                             max={MAX_LAMBDA}
                             step={0.01}
-                            value={lambdas.ga[idx]}
-                            onChange={e => handleSlider(idx, 'ga', parseFloat(e.target.value))}
+                            value={lambdas.def[idx]}
+                            onChange={e => handleSlider(idx, 'def', parseFloat(e.target.value))}
                             className="w-full h-2 accent-copa-red cursor-pointer"
                           />
                         </div>

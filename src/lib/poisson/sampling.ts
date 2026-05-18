@@ -1,30 +1,41 @@
 /**
  * Modelo de Poisson para simulação de partidas de futebol.
  *
+ * Modelo multiplicativo (calibrado por força Bradley-Terry):
+ *   λ_atk(i) = μ × (F_i / F_ref)^α
+ *   λ_def(i) = μ × (F_ref / F_i)^α
+ *
  * Para um confronto A vs B:
- *   λ_A = (A.lambda_gf + B.lambda_ga) / 2
- *   λ_B = (B.lambda_gf + A.lambda_ga) / 2
+ *   λ_A = λ_atk(A) × λ_def(B) / μ
+ *   λ_B = λ_atk(B) × λ_def(A) / μ
  *   gols_A ~ Poisson(λ_A)
  *   gols_B ~ Poisson(λ_B)
+ *
+ * Parâmetros calibrados:
+ *   α        = 0,45    (damping da assimetria atk/def)
+ *   μ        = 1,189834 (baseline de gols por time/partida — alvo 2,8 gols/jogo)
+ *   F_ref    = 27,20971 (média geométrica das 48 forças)
  *
  * Limitações documentadas:
  * 1. Assume independência entre gols A e B (na realidade há leve correlação
  *    negativa — Dixon-Coles corrige, mas fica fora do escopo deste trabalho).
- * 2. Não considera mando de campo (Copa em sede neutra, com exceção dos
- *    anfitriões EUA/Canadá/México — ignorar é razoável para a maior parte
- *    dos jogos).
+ * 2. Não considera mando de campo.
  * 3. 5 seleções têm λ estimado por baixa amostra histórica (source ===
  *    "estimate"). A UI sinaliza esses casos com ícone informativo.
  */
 
 import teamsData from '../../data/teams_poisson.json';
 
+export const ALPHA = 0.45;
+export const MU_BASELINE = 1.189834;
+export const F_REF = 27.20971;
+
 export interface PoissonTeam {
   name: string;
   force: number;
   matches: number;
-  lambda_gf: number;
-  lambda_ga: number;
+  lambda_atk: number;
+  lambda_def: number;
   source: 'historical' | 'estimate';
 }
 
@@ -36,25 +47,25 @@ export const POISSON_TEAM_INDEX = new Map<string, number>(
 
 // Defaults preservados na carga do JSON — usados para reset e para restaurar
 // o singleton no worker quando o payload não traz customização.
-const DEFAULT_LAMBDA_GF: number[] = POISSON_TEAMS.map(t => t.lambda_gf);
-const DEFAULT_LAMBDA_GA: number[] = POISSON_TEAMS.map(t => t.lambda_ga);
+const DEFAULT_LAMBDA_ATK: number[] = POISSON_TEAMS.map(t => t.lambda_atk);
+const DEFAULT_LAMBDA_DEF: number[] = POISSON_TEAMS.map(t => t.lambda_def);
 
 export interface LambdaArrays {
-  gf: number[];
-  ga: number[];
+  atk: number[];
+  def: number[];
 }
 
 export function setCustomLambdas(lambdas?: LambdaArrays): void {
-  const gf = lambdas?.gf ?? DEFAULT_LAMBDA_GF;
-  const ga = lambdas?.ga ?? DEFAULT_LAMBDA_GA;
+  const atk = lambdas?.atk ?? DEFAULT_LAMBDA_ATK;
+  const def = lambdas?.def ?? DEFAULT_LAMBDA_DEF;
   for (let i = 0; i < POISSON_TEAMS.length; i++) {
-    POISSON_TEAMS[i].lambda_gf = gf[i];
-    POISSON_TEAMS[i].lambda_ga = ga[i];
+    POISSON_TEAMS[i].lambda_atk = atk[i];
+    POISSON_TEAMS[i].lambda_def = def[i];
   }
 }
 
 export function getDefaultLambdas(): LambdaArrays {
-  return { gf: [...DEFAULT_LAMBDA_GF], ga: [...DEFAULT_LAMBDA_GA] };
+  return { atk: [...DEFAULT_LAMBDA_ATK], def: [...DEFAULT_LAMBDA_DEF] };
 }
 
 // Algoritmo de Knuth — eficiente e correto para λ < 30 (todos os nossos λ < 5).
@@ -76,8 +87,8 @@ export interface Lambdas {
 
 export function lambdasFor(a: PoissonTeam, b: PoissonTeam): Lambdas {
   return {
-    lambdaA: (a.lambda_gf + b.lambda_ga) / 2,
-    lambdaB: (b.lambda_gf + a.lambda_ga) / 2,
+    lambdaA: (a.lambda_atk * b.lambda_def) / MU_BASELINE,
+    lambdaB: (b.lambda_atk * a.lambda_def) / MU_BASELINE,
   };
 }
 

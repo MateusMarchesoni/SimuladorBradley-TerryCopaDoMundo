@@ -291,7 +291,7 @@ export function MatchMode() {
                 <div>λ_A = <span className="text-copa-dark font-bold">{output.lambdaA.toFixed(3)}</span></div>
                 <div>λ_B = <span className="text-copa-dark font-bold">{output.lambdaB.toFixed(3)}</span></div>
                 <div className="mt-1 text-[10px] text-gray-400 not-italic">
-                  λ_A = (A.gf + B.ga)/2
+                  λ_A = λ_atk(A) × λ_def(B) / μ
                 </div>
               </div>
             </div>
