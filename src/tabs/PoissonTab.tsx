@@ -22,10 +22,10 @@ export function PoissonTab() {
   }, [lambdas]);
 
   const hasCustom = useMemo(() => {
-    const def = getDefaultLambdas();
-    for (let i = 0; i < def.gf.length; i++) {
-      if (Math.abs(lambdas.gf[i] - def.gf[i]) > 1e-6) return true;
-      if (Math.abs(lambdas.ga[i] - def.ga[i]) > 1e-6) return true;
+    const defaults = getDefaultLambdas();
+    for (let i = 0; i < defaults.atk.length; i++) {
+      if (Math.abs(lambdas.atk[i] - defaults.atk[i]) > 1e-6) return true;
+      if (Math.abs(lambdas.def[i] - defaults.def[i]) > 1e-6) return true;
     }
     return false;
   }, [lambdas]);
@@ -35,10 +35,11 @@ export function PoissonTab() {
       <div className="bg-white rounded-2xl shadow-md p-4">
         <h2 className="text-lg font-bold text-copa-dark mb-1">Modelo de Poisson</h2>
         <p className="text-xs text-gray-500 leading-relaxed mb-4">
-          Cada time tem λ médio de gols feitos e sofridos. Para um confronto, os gols são amostrados de
-          distribuições de Poisson independentes:
+          Cada time tem força ofensiva (λ_atk) e fragilidade defensiva (λ_def), calibradas a partir da
+          força Bradley-Terry com damping <span className="font-mono">α=0,45</span> e baseline{' '}
+          <span className="font-mono">μ=1,189834</span>. Em um confronto:
           <span className="font-mono bg-copa-bg px-1.5 ml-1 rounded">
-            λ_A = (A.gf + B.ga) / 2
+            λ_A = λ_atk(A) × λ_def(B) / μ
           </span>
           .
         </p>
