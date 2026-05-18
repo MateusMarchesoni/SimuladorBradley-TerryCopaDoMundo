@@ -34,6 +34,29 @@ export const POISSON_TEAM_INDEX = new Map<string, number>(
   POISSON_TEAMS.map((t, i) => [t.name, i])
 );
 
+// Defaults preservados na carga do JSON — usados para reset e para restaurar
+// o singleton no worker quando o payload não traz customização.
+const DEFAULT_LAMBDA_GF: number[] = POISSON_TEAMS.map(t => t.lambda_gf);
+const DEFAULT_LAMBDA_GA: number[] = POISSON_TEAMS.map(t => t.lambda_ga);
+
+export interface LambdaArrays {
+  gf: number[];
+  ga: number[];
+}
+
+export function setCustomLambdas(lambdas?: LambdaArrays): void {
+  const gf = lambdas?.gf ?? DEFAULT_LAMBDA_GF;
+  const ga = lambdas?.ga ?? DEFAULT_LAMBDA_GA;
+  for (let i = 0; i < POISSON_TEAMS.length; i++) {
+    POISSON_TEAMS[i].lambda_gf = gf[i];
+    POISSON_TEAMS[i].lambda_ga = ga[i];
+  }
+}
+
+export function getDefaultLambdas(): LambdaArrays {
+  return { gf: [...DEFAULT_LAMBDA_GF], ga: [...DEFAULT_LAMBDA_GA] };
+}
+
 // Algoritmo de Knuth — eficiente e correto para λ < 30 (todos os nossos λ < 5).
 export function poissonSample(lambda: number): number {
   const L = Math.exp(-lambda);
