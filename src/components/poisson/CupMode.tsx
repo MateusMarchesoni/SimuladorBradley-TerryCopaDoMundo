@@ -1,7 +1,7 @@
 import { useCallback, useRef, useState } from 'react';
 import { Play, Loader2, CheckCircle2, AlertTriangle, Info } from 'lucide-react';
 import { TEAMS } from '../../data/teams';
-import { POISSON_TEAMS } from '../../lib/poisson/sampling';
+import { POISSON_TEAMS, type LambdaArrays } from '../../lib/poisson/sampling';
 import type { PoissonCupStats } from '../../lib/poisson/cupSimulator';
 
 type WorkerMsg =
@@ -37,7 +37,11 @@ function flagFor(name: string): string {
   return TEAMS.find(t => t.name === name)?.flag ?? '';
 }
 
-export function CupMode() {
+interface Props {
+  customLambdas?: LambdaArrays;
+}
+
+export function CupMode({ customLambdas }: Props) {
   const [numCups, setNumCups] = useState<number>(1_000);
   const [running, setRunning] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -69,8 +73,8 @@ export function CupMode() {
       }
     };
 
-    worker.postMessage({ numCups });
-  }, [running, numCups]);
+    worker.postMessage({ numCups, customLambdas });
+  }, [running, numCups, customLambdas]);
 
   // Ranking pelo % campeão para destacar top-5
   const ranked = stats
