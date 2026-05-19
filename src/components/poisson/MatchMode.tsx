@@ -1,15 +1,12 @@
 import { useMemo, useState } from 'react';
 import { Play, Loader2, Info } from 'lucide-react';
-import { TEAMS } from '../../data/teams';
-import {
-  POISSON_TEAMS,
-  POISSON_TEAM_INDEX,
-  poissonSample,
-  lambdasFor,
-} from '../../lib/poisson/sampling';
+import { TEAMS, TEAM_INDEX_MAP } from '../../data/teams';
+import { POISSON_TEAMS, poissonSample, lambdasFor } from '../../lib/poisson/sampling';
+import { POISSON_V1_DEFAULTS } from '../../data/poissonV1Lambdas';
+import { lambdasForV1 } from '../../lib/poisson/v1';
 import { ScoreHeatmap } from './ScoreHeatmap';
 
-const HEATMAP_SIZE = 6; // 0..5+
+const HEATMAP_SIZE = 6;
 const MAX_SIMS = 100_000;
 
 interface SimulationOutput {
@@ -25,8 +22,21 @@ interface SimulationOutput {
   totalSamples: number;
 }
 
+type PoissonModelId = 'poissonV1' | 'poissonV2';
+
 function flagForName(name: string): string {
   return TEAMS.find(t => t.name === name)?.flag ?? '';
+}
+
+// Retorna source (estimate/historical) para o time/modelo informado.
+function sourceFor(modelId: PoissonModelId, idx: number): 'historical' | 'estimate' {
+  if (modelId === 'poissonV1') return POISSON_V1_DEFAULTS[idx].source;
+  return POISSON_TEAMS[idx].source;
+}
+
+function lambdasForModel(modelId: PoissonModelId, aIdx: number, bIdx: number) {
+  if (modelId === 'poissonV1') return lambdasForV1(aIdx, bIdx);
+  return lambdasFor(POISSON_TEAMS[aIdx], POISSON_TEAMS[bIdx]);
 }
 
 interface TeamDropdownProps {
@@ -34,20 +44,23 @@ interface TeamDropdownProps {
   value: string;
   onChange: (name: string) => void;
   excludeName?: string;
+  modelId: PoissonModelId;
 }
 
-function TeamDropdown({ label, value, onChange, excludeName }: TeamDropdownProps) {
+function TeamDropdown({ label, value, onChange, excludeName, modelId }: TeamDropdownProps) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return POISSON_TEAMS
+    return TEAMS
+      .map((t, i) => ({ name: t.name, idx: i }))
       .filter(t => t.name !== excludeName)
       .filter(t => !q || t.name.toLowerCase().includes(q));
   }, [query, excludeName]);
 
-  const selected = POISSON_TEAMS.find(t => t.name === value);
+  const selectedIdx = TEAM_INDEX_MAP.get(value);
+  const selectedSource = selectedIdx !== undefined ? sourceFor(modelId, selectedIdx) : 'historical';
 
   return (
     <div className="relative">
@@ -60,7 +73,7 @@ function TeamDropdown({ label, value, onChange, excludeName }: TeamDropdownProps
         <span className="flex items-center gap-2 truncate">
           <span className="text-lg">{flagForName(value)}</span>
           <span className="font-semibold text-copa-dark truncate">{value}</span>
-          {selected?.source === 'estimate' && (
+          {selectedSource === 'estimate' && (
             <span title="λ estimado (amostra insuficiente)">
               <Info className="w-4 h-4 text-copa-gold" />
             </span>
@@ -82,29 +95,32 @@ function TeamDropdown({ label, value, onChange, excludeName }: TeamDropdownProps
             {filtered.length === 0 && (
               <li className="px-3 py-2 text-sm text-gray-400">Nenhuma seleção encontrada</li>
             )}
-            {filtered.map(t => (
-              <li key={t.name}>
-                <button
-                  type="button"
-                  onClick={() => {
-                    onChange(t.name);
-                    setOpen(false);
-                    setQuery('');
-                  }}
-                  className={`w-full text-left px-3 py-2 text-sm flex items-center gap-2 hover:bg-gray-50 ${
-                    t.name === value ? 'bg-copa-bg font-semibold' : ''
-                  }`}
-                >
-                  <span className="text-base">{flagForName(t.name)}</span>
-                  <span className="truncate">{t.name}</span>
-                  {t.source === 'estimate' && (
-                    <span title="λ estimado (amostra insuficiente)">
-                      <Info className="w-3.5 h-3.5 text-copa-gold ml-auto flex-shrink-0" />
-                    </span>
-                  )}
-                </button>
-              </li>
-            ))}
+            {filtered.map(t => {
+              const src = sourceFor(modelId, t.idx);
+              return (
+                <li key={t.name}>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      onChange(t.name);
+                      setOpen(false);
+                      setQuery('');
+                    }}
+                    className={`w-full text-left px-3 py-2 text-sm flex items-center gap-2 hover:bg-gray-50 ${
+                      t.name === value ? 'bg-copa-bg font-semibold' : ''
+                    }`}
+                  >
+                    <span className="text-base">{flagForName(t.name)}</span>
+                    <span className="truncate">{t.name}</span>
+                    {src === 'estimate' && (
+                      <span title="λ estimado (amostra insuficiente)">
+                        <Info className="w-3.5 h-3.5 text-copa-gold ml-auto flex-shrink-0" />
+                      </span>
+                    )}
+                  </button>
+                </li>
+              );
+            })}
           </ul>
         </div>
       )}
@@ -129,18 +145,20 @@ function ProbBar({ winA, draw, winB }: { winA: number; draw: number; winB: numbe
   );
 }
 
-function runSimulation(teamAName: string, teamBName: string, nSims: number): SimulationOutput {
-  const aIdx = POISSON_TEAM_INDEX.get(teamAName)!;
-  const bIdx = POISSON_TEAM_INDEX.get(teamBName)!;
-  const a = POISSON_TEAMS[aIdx];
-  const b = POISSON_TEAMS[bIdx];
-  const { lambdaA, lambdaB } = lambdasFor(a, b);
+function runSimulation(
+  modelId: PoissonModelId,
+  teamAName: string,
+  teamBName: string,
+  nSims: number
+): SimulationOutput {
+  const aIdx = TEAM_INDEX_MAP.get(teamAName)!;
+  const bIdx = TEAM_INDEX_MAP.get(teamBName)!;
+  const { lambdaA, lambdaB } = lambdasForModel(modelId, aIdx, bIdx);
 
   const matrix: number[][] = Array.from({ length: HEATMAP_SIZE }, () =>
     new Array(HEATMAP_SIZE).fill(0)
   );
 
-  // Para "placar mais provável" usamos placares não-cap (precisão acima do heatmap também)
   const rawTally = new Map<string, number>();
   let winA = 0;
   let draw = 0;
@@ -158,7 +176,6 @@ function runSimulation(teamAName: string, teamBName: string, nSims: number): Sim
     const kb = Math.min(gb, HEATMAP_SIZE - 1);
     matrix[ka][kb]++;
 
-    // Tally exato para placar mais provável (usa cap de segurança 12)
     const exactKey = `${Math.min(ga, 12)}-${Math.min(gb, 12)}`;
     rawTally.set(exactKey, (rawTally.get(exactKey) ?? 0) + 1);
   }
@@ -187,9 +204,13 @@ function runSimulation(teamAName: string, teamBName: string, nSims: number): Sim
   };
 }
 
-export function MatchMode() {
-  const [teamA, setTeamA] = useState<string>(POISSON_TEAMS[3].name); // Brasil
-  const [teamB, setTeamB] = useState<string>(POISSON_TEAMS[5].name); // Argentina
+interface MatchModeProps {
+  modelId: PoissonModelId;
+}
+
+export function MatchMode({ modelId }: MatchModeProps) {
+  const [teamA, setTeamA] = useState<string>('Brasil');
+  const [teamB, setTeamB] = useState<string>('Argentina');
   const [numSims, setNumSims] = useState<number>(10_000);
   const [running, setRunning] = useState(false);
   const [output, setOutput] = useState<SimulationOutput | null>(null);
@@ -200,29 +221,35 @@ export function MatchMode() {
     if (!canSimulate) return;
     const n = Math.max(100, Math.min(numSims, MAX_SIMS));
     setRunning(true);
-    // setTimeout permite que o spinner renderize antes do bloqueio
     setTimeout(() => {
-      const out = runSimulation(teamA, teamB, n);
+      const out = runSimulation(modelId, teamA, teamB, n);
       setOutput(out);
       setRunning(false);
     }, 16);
   };
+
+  const formulaText =
+    modelId === 'poissonV1'
+      ? 'Λ_A = (λ_atk(A) + λ_def(B)) / 2'
+      : 'λ_A = λ_atk(A) × λ_def(B) / μ';
 
   return (
     <div className="flex flex-col gap-4">
       <div className="bg-white rounded-2xl shadow-md p-5 flex flex-col gap-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <TeamDropdown
-            label="Time A (mandante visual)"
+            label="Time A"
             value={teamA}
             onChange={setTeamA}
             excludeName={teamB}
+            modelId={modelId}
           />
           <TeamDropdown
             label="Time B"
             value={teamB}
             onChange={setTeamB}
             excludeName={teamA}
+            modelId={modelId}
           />
         </div>
 
@@ -263,7 +290,6 @@ export function MatchMode() {
 
       {output && (
         <>
-          {/* Resultado principal */}
           <div className="bg-white rounded-2xl shadow-md p-5 flex flex-col gap-4">
             <div className="flex items-center justify-between gap-4 flex-wrap">
               <div>
@@ -288,11 +314,9 @@ export function MatchMode() {
                 </p>
               </div>
               <div className="text-right text-xs text-gray-500 font-mono">
-                <div>λ_A = <span className="text-copa-dark font-bold">{output.lambdaA.toFixed(3)}</span></div>
-                <div>λ_B = <span className="text-copa-dark font-bold">{output.lambdaB.toFixed(3)}</span></div>
-                <div className="mt-1 text-[10px] text-gray-400 not-italic">
-                  λ_A = λ_atk(A) × λ_def(B) / μ
-                </div>
+                <div>Λ_A = <span className="text-copa-dark font-bold">{output.lambdaA.toFixed(3)}</span></div>
+                <div>Λ_B = <span className="text-copa-dark font-bold">{output.lambdaB.toFixed(3)}</span></div>
+                <div className="mt-1 text-[10px] text-gray-400 not-italic">{formulaText}</div>
               </div>
             </div>
 

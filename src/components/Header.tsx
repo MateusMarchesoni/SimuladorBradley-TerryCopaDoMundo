@@ -10,16 +10,16 @@ export function Header() {
             Simulador Copa do Mundo 2026
           </h1>
           <p className="text-base sm:text-lg font-semibold opacity-90">
-            Bradley-Terry & Poisson — Monte Carlo
+            Bradley-Terry, Poisson V1 & V2 — Monte Carlo
           </p>
         </div>
       </div>
       <div className="max-w-6xl mx-auto mt-3 px-1">
         <p className="text-sm sm:text-base opacity-85 leading-snug">
-          Dois modelos probabilísticos para simular a Copa: <strong>Bradley-Terry</strong> compara
-          forças relativas para decidir o vencedor; <strong>Poisson</strong> sorteia gols a partir
-          de médias históricas de ataque e defesa. Rodamos <strong>milhares de Copas virtuais</strong>
-          para estimar as probabilidades reais.
+          Três modelos probabilísticos para simular a Copa: <strong>Bradley-Terry</strong> compara
+          forças relativas; <strong>Poisson V1</strong> usa médias históricas de gols; e{' '}
+          <strong>Poisson V2</strong> deriva os lambdas a partir das forças BT. Rodamos{' '}
+          <strong>milhares de Copas virtuais</strong> para estimar as probabilidades.
         </p>
       </div>
     </header>
