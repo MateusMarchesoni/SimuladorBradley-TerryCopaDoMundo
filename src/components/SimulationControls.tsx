@@ -7,9 +7,9 @@ interface Props {
   progress: number;
   onMonteCarlo: () => void;
   onSingle: () => void;
+  // Opções configuráveis por modelo (BT vai até 50k, Poisson até 25k).
+  simOptions: readonly number[];
 }
-
-const SIM_OPTIONS = [1_000, 10_000, 50_000] as const;
 
 export function SimulationControls({
   numSims,
@@ -18,6 +18,7 @@ export function SimulationControls({
   progress,
   onMonteCarlo,
   onSingle,
+  simOptions,
 }: Props) {
   return (
     <div className="bg-white rounded-2xl shadow-md p-5 flex flex-col gap-4">
@@ -27,7 +28,7 @@ export function SimulationControls({
           Número de simulações
         </p>
         <div className="flex gap-2 flex-wrap">
-          {SIM_OPTIONS.map(n => (
+          {simOptions.map(n => (
             <button
               key={n}
               onClick={() => onNumSimsChange(n)}

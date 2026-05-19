@@ -1,15 +1,21 @@
 import { useState, useRef } from 'react';
 import { X, RotateCcw, Download, Upload, Search, ChevronDown, ChevronUp, Info } from 'lucide-react';
-import { TEAMS } from '../../data/teams';
+import { TEAMS, TEAM_INDEX_MAP } from '../../data/teams';
 import { GROUPS } from '../../data/groups';
 import {
   POISSON_TEAMS,
-  POISSON_TEAM_INDEX,
   getDefaultLambdas,
   type LambdaArrays,
 } from '../../lib/poisson/sampling';
+import {
+  POISSON_V1_DEFAULTS,
+  type PoissonV1Team,
+} from '../../data/poissonV1Lambdas';
+import { getDefaultLambdasV1 } from '../../lib/poisson/v1';
+import type { ModelId } from '../../lib/models/types';
 
 interface Props {
+  modelId: 'poissonV1' | 'poissonV2';
   lambdas: LambdaArrays;
   onLambdasChange: (lambdas: LambdaArrays) => void;
   onClose: () => void;
@@ -17,13 +23,14 @@ interface Props {
 
 const MAX_LAMBDA = 5;
 
-// Mapeia nome do grupo → índices dentro de POISSON_TEAMS
+// Índices por grupo, usando TEAM_INDEX_MAP (mesma ordem para V1 e V2 — alinhada
+// com TEAMS).
 const GROUP_TEAM_INDICES: [string, number[]][] = Object.entries(GROUPS).map(
   ([groupName, names]) => [
     groupName,
     names.map(n => {
-      const idx = POISSON_TEAM_INDEX.get(n);
-      if (idx === undefined) throw new Error(`Time não encontrado em POISSON_TEAMS: ${n}`);
+      const idx = TEAM_INDEX_MAP.get(n);
+      if (idx === undefined) throw new Error(`Time não encontrado em TEAMS: ${n}`);
       return idx;
     }),
   ]
@@ -33,7 +40,20 @@ function flagForName(name: string): string {
   return TEAMS.find(t => t.name === name)?.flag ?? '';
 }
 
-export function LambdaEditor({ lambdas, onLambdasChange, onClose }: Props) {
+// Retorna nome e source para um índice, conforme o modelo selecionado.
+function teamInfoFor(modelId: ModelId, idx: number): {
+  name: string;
+  source: 'historical' | 'estimate';
+} {
+  if (modelId === 'poissonV1') {
+    const t = POISSON_V1_DEFAULTS[idx] as PoissonV1Team;
+    return { name: t.name, source: t.source };
+  }
+  const t = POISSON_TEAMS[idx];
+  return { name: t.name, source: t.source };
+}
+
+export function LambdaEditor({ modelId, lambdas, onLambdasChange, onClose }: Props) {
   const [search, setSearch] = useState('');
   const [openGroups, setOpenGroups] = useState<Set<string>>(new Set(['A', 'B', 'C']));
   const [importError, setImportError] = useState<string | null>(null);
@@ -46,21 +66,32 @@ export function LambdaEditor({ lambdas, onLambdasChange, onClose }: Props) {
   };
 
   const handleReset = () => {
-    onLambdasChange(getDefaultLambdas());
+    onLambdasChange(modelId === 'poissonV1' ? getDefaultLambdasV1() : getDefaultLambdas());
   };
+
+  const titleText =
+    modelId === 'poissonV1'
+      ? 'Editar Lambdas (Poisson V1 — Histórico)'
+      : 'Editar Lambdas (Poisson V2 — Forças)';
+
+  const formulaText =
+    modelId === 'poissonV1'
+      ? 'Em um confronto A×B: Λ_A = (λ_atk(A) + λ_def(B)) / 2.'
+      : 'Em um confronto A×B: λ_A = λ_atk(A) × λ_def(B) / μ.';
 
   const handleExport = () => {
     const rows = [
       'Nome,λ_atk,λ_def,Bandeira',
-      ...POISSON_TEAMS.map((t, i) =>
-        `${t.name},${lambdas.atk[i].toFixed(6)},${lambdas.def[i].toFixed(6)},${flagForName(t.name)}`
+      ...TEAMS.map((t, i) =>
+        `${t.name},${lambdas.atk[i].toFixed(6)},${lambdas.def[i].toFixed(6)},${t.flag}`
       ),
     ];
     const blob = new Blob([rows.join('\n')], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'lambdas_copa2026.csv';
+    const fileSuffix = modelId === 'poissonV1' ? 'v1_historico' : 'v2_forcas';
+    a.download = `lambdas_copa2026_${fileSuffix}.csv`;
     a.click();
     URL.revokeObjectURL(url);
   };
@@ -85,7 +116,7 @@ export function LambdaEditor({ lambdas, onLambdasChange, onClose }: Props) {
         const name = parts[0].trim();
         const valAtk = parseFloat(parts[1].trim());
         const valDef = parseFloat(parts[2].trim());
-        const idx = POISSON_TEAM_INDEX.get(name);
+        const idx = TEAM_INDEX_MAP.get(name);
         if (idx === undefined) { warnings.push(name); continue; }
         if (isNaN(valAtk) || valAtk < 0 || isNaN(valDef) || valDef < 0) {
           warnings.push(name + ' (valor inválido)');
@@ -117,7 +148,10 @@ export function LambdaEditor({ lambdas, onLambdasChange, onClose }: Props) {
   const filtered = filterLow
     ? GROUP_TEAM_INDICES
         .map(([g, idxs]) =>
-          [g, idxs.filter(i => POISSON_TEAMS[i].name.toLowerCase().includes(filterLow))] as [string, number[]]
+          [
+            g,
+            idxs.filter(i => teamInfoFor(modelId, i).name.toLowerCase().includes(filterLow)),
+          ] as [string, number[]]
         )
         .filter(([, idxs]) => idxs.length > 0)
     : GROUP_TEAM_INDICES;
@@ -128,7 +162,7 @@ export function LambdaEditor({ lambdas, onLambdasChange, onClose }: Props) {
 
       <div className="relative ml-auto w-full max-w-sm sm:max-w-md bg-white h-full flex flex-col shadow-2xl">
         <div className="flex items-center justify-between px-4 py-4 border-b border-gray-100 bg-copa-dark text-white">
-          <h2 className="font-bold text-lg">Editar Lambdas (Poisson)</h2>
+          <h2 className="font-bold text-lg">{titleText}</h2>
           <button onClick={onClose} className="p-1 hover:bg-white/20 rounded-lg transition-colors">
             <X className="w-5 h-5" />
           </button>
@@ -172,7 +206,7 @@ export function LambdaEditor({ lambdas, onLambdasChange, onClose }: Props) {
           <p className="text-[11px] text-gray-500 mb-2 leading-snug">
             <span className="font-semibold text-copa-green">λ_atk</span> = força ofensiva &nbsp;·&nbsp;
             <span className="font-semibold text-copa-red">λ_def</span> = fragilidade defensiva.
-            <span className="block">Em um confronto A×B: λ_A = λ_atk(A) × λ_def(B) / μ.</span>
+            <span className="block">{formulaText}</span>
           </p>
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
@@ -199,7 +233,7 @@ export function LambdaEditor({ lambdas, onLambdasChange, onClose }: Props) {
               {(openGroups.has(groupName) || filterLow !== '') && (
                 <div className="divide-y divide-gray-50">
                   {idxs.map(idx => {
-                    const team = POISSON_TEAMS[idx];
+                    const team = teamInfoFor(modelId, idx);
                     return (
                       <div key={idx} className="px-3 py-3">
                         <div className="flex items-center gap-2 mb-2">

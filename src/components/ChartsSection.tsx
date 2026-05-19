@@ -4,10 +4,10 @@ import {
   PieChart, Pie, Cell, Legend,
 } from 'recharts';
 import { TEAMS } from '../data/teams';
-import type { SimStats } from '../lib/monteCarlo';
+import type { UnifiedStats } from '../lib/models/types';
 
 interface Props {
-  stats: SimStats;
+  stats: UnifiedStats;
 }
 
 type Tab = 'top10' | 'fases' | 'pizza';
@@ -31,7 +31,7 @@ function fmt(v: number): string {
 }
 
 // Gráfico 1: barras horizontais top 10 campeões
-function Top10Chart({ stats }: { stats: SimStats }) {
+function Top10Chart({ stats }: { stats: UnifiedStats }) {
   const data = TEAMS
     .map((t, i) => ({ name: `${t.flag} ${t.name}`, value: stats.champion[i] }))
     .sort((a, b) => b.value - a.value)
@@ -77,7 +77,7 @@ function Top10Chart({ stats }: { stats: SimStats }) {
 }
 
 // Gráfico 2: barras agrupadas por fase para os top 8 times
-function PhasesChart({ stats }: { stats: SimStats }) {
+function PhasesChart({ stats }: { stats: UnifiedStats }) {
   const top8 = TEAMS
     .map((t, i) => ({ ...t, idx: i }))
     .sort((a, b) => stats.champion[b.idx] - stats.champion[a.idx])
@@ -130,7 +130,7 @@ function PhasesChart({ stats }: { stats: SimStats }) {
 }
 
 // Gráfico 3: pizza divisão do título
-function PizzaChart({ stats }: { stats: SimStats }) {
+function PizzaChart({ stats }: { stats: UnifiedStats }) {
   const sorted = TEAMS
     .map((t, i) => ({ name: `${t.flag} ${t.name}`, value: stats.champion[i] }))
     .sort((a, b) => b.value - a.value);

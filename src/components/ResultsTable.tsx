@@ -1,13 +1,24 @@
 import { useState } from 'react';
-import { ChevronUp, ChevronDown, ChevronsUpDown } from 'lucide-react';
+import { ChevronUp, ChevronDown, ChevronsUpDown, Info } from 'lucide-react';
 import { TEAMS } from '../data/teams';
-import type { SimStats } from '../lib/monteCarlo';
+import type { UnifiedStats } from '../lib/models/types';
+import { POISSON_V1_DEFAULTS } from '../data/poissonV1Lambdas';
+import { POISSON_TEAMS } from '../lib/poisson/sampling';
+import type { ModelId } from '../lib/models/types';
 
 interface Props {
-  stats: SimStats;
+  stats: UnifiedStats;
+  modelId: ModelId;
 }
 
-type SortKey = keyof SimStats;
+type SortKey =
+  | 'top2'
+  | 'qualified'
+  | 'r16'
+  | 'qf'
+  | 'sf'
+  | 'final'
+  | 'champion';
 
 const COLS: { key: SortKey; label: string; short: string }[] = [
   { key: 'top2', label: 'Top 2 no Grupo', short: 'Top 2' },
@@ -32,7 +43,14 @@ function fmt(pct: number): string {
   return pct.toFixed(3) + '%';
 }
 
-export function ResultsTable({ stats }: Props) {
+// Para o modelo Poisson, checa se o time tem λ estimado (badge informativo).
+function isEstimateFor(modelId: ModelId, idx: number): boolean {
+  if (modelId === 'poissonV1') return POISSON_V1_DEFAULTS[idx]?.source === 'estimate';
+  if (modelId === 'poissonV2') return POISSON_TEAMS[idx]?.source === 'estimate';
+  return false;
+}
+
+export function ResultsTable({ stats, modelId }: Props) {
   const [sortKey, setSortKey] = useState<SortKey>('champion');
   const [sortDir, setSortDir] = useState<'desc' | 'asc'>('desc');
 
@@ -49,6 +67,7 @@ export function ResultsTable({ stats }: Props) {
     idx: i,
     name: t.name,
     flag: t.flag,
+    isEstimate: isEstimateFor(modelId, i),
     top2: stats.top2[i],
     qualified: stats.qualified[i],
     r16: stats.r16[i],
@@ -109,6 +128,14 @@ export function ResultsTable({ stats }: Props) {
                 <td className="px-3 py-2 sticky left-0 bg-white font-medium text-copa-dark whitespace-nowrap">
                   <span className="mr-2 text-base">{r.flag}</span>
                   {r.name}
+                  {r.isEstimate && (
+                    <span
+                      className="inline-flex ml-1 align-middle"
+                      title="λ estimado (amostra histórica insuficiente)"
+                    >
+                      <Info className="w-3.5 h-3.5 text-copa-gold" />
+                    </span>
+                  )}
                 </td>
                 {COLS.map(c => (
                   <td key={c.key} className="px-3 py-2 text-right">
