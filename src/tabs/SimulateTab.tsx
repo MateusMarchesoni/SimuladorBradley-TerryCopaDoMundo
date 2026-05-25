@@ -10,9 +10,11 @@
 import { useCallback, useMemo, useRef, useState } from 'react';
 import { Settings, Swords } from 'lucide-react';
 import { SimulationControls } from '../components/SimulationControls';
-import { ResultsTable } from '../components/ResultsTable';
+import { ResultsTable, buildCopa2026Columns } from '../components/ResultsTable';
+import { POISSON_V1_DEFAULTS } from '../data/poissonV1Lambdas';
+import { POISSON_TEAMS } from '../lib/poisson/sampling';
 import { ChartsSection } from '../components/ChartsSection';
-import { SingleBracket } from '../components/SingleBracket';
+import { SingleBracket, COPA_2026_ROUND_NAMES } from '../components/SingleBracket';
 import { ForceEditor } from '../components/ForceEditor';
 import { LambdaEditor } from '../components/poisson/LambdaEditor';
 import { MatchMode } from '../components/poisson/MatchMode';
@@ -245,7 +247,14 @@ export function SimulateTab({ onModelChange }: SimulateTabProps = {}) {
       {mcStats && (
         <>
           <ChartsSection stats={mcStats} />
-          <ResultsTable stats={mcStats} modelId={modelId} />
+          <ResultsTable
+            columns={buildCopa2026Columns(mcStats)}
+            isEstimateByIndex={(i) => {
+              if (modelId === 'poissonV1') return POISSON_V1_DEFAULTS[i]?.source === 'estimate';
+              if (modelId === 'poissonV2') return POISSON_TEAMS[i]?.source === 'estimate';
+              return false;
+            }}
+          />
           {meta.hasScores && <ValidationPanel stats={mcStats} />}
         </>
       )}
@@ -261,7 +270,19 @@ export function SimulateTab({ onModelChange }: SimulateTabProps = {}) {
               Fechar
             </button>
           </div>
-          <SingleBracket result={singleResult} showScores={showScores} />
+          <SingleBracket
+            groupResults={singleResult.groupResults}
+            rounds={[
+              singleResult.knockout.r32,
+              singleResult.knockout.r16,
+              singleResult.knockout.qf,
+              singleResult.knockout.sf,
+              [singleResult.knockout.final],
+            ]}
+            champion={singleResult.knockout.champion}
+            roundNames={COPA_2026_ROUND_NAMES}
+            showScores={showScores}
+          />
         </div>
       )}
 

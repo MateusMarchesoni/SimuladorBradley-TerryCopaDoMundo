@@ -1,12 +1,13 @@
 import { useState } from 'react';
-import { Trophy, Scale, Timer } from 'lucide-react';
+import { Trophy, Scale, Timer, Sliders } from 'lucide-react';
 import { Header } from './components/Header';
 import { SimulateTab } from './tabs/SimulateTab';
 import { CompareTab } from './tabs/CompareTab';
 import { MinuteByMinuteTab } from './tabs/MinuteByMinuteTab';
+import { CustomTournamentTab } from './tabs/CustomTournamentTab';
 import type { ModelId } from './lib/models/types';
 
-type TabId = 'simulate' | 'compare' | 'minute';
+type TabId = 'simulate' | 'compare' | 'minute' | 'custom';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<TabId>('simulate');
@@ -41,6 +42,12 @@ export default function App() {
             icon={<Timer className="w-4 h-4" />}
             label="Minuto a Minuto"
           />
+          <TabButton
+            active={activeTab === 'custom'}
+            onClick={() => setActiveTab('custom')}
+            icon={<Sliders className="w-4 h-4" />}
+            label="Torneio Customizado"
+          />
         </div>
       </nav>
 
@@ -54,6 +61,9 @@ export default function App() {
       </div>
       <div className={activeTab === 'minute' ? '' : 'hidden'}>
         <MinuteByMinuteTab activeModelId={activeModelId} />
+      </div>
+      <div className={activeTab === 'custom' ? '' : 'hidden'}>
+        <CustomTournamentTab />
       </div>
     </div>
   );

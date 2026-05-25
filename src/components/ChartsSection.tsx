@@ -5,9 +5,12 @@ import {
 } from 'recharts';
 import { TEAMS } from '../data/teams';
 import type { UnifiedStats } from '../lib/models/types';
+import type { TeamView } from '../lib/custom/types';
 
 interface Props {
   stats: UnifiedStats;
+  // Default = TEAMS global (Copa 2026). Custom passa lista do torneio.
+  teamsByIndex?: TeamView[];
 }
 
 type Tab = 'top10' | 'fases' | 'pizza';
@@ -31,8 +34,8 @@ function fmt(v: number): string {
 }
 
 // Gráfico 1: barras horizontais top 10 campeões
-function Top10Chart({ stats }: { stats: UnifiedStats }) {
-  const data = TEAMS
+function Top10Chart({ stats, teams }: { stats: UnifiedStats; teams: TeamView[] }) {
+  const data = teams
     .map((t, i) => ({ name: `${t.flag} ${t.name}`, value: stats.champion[i] }))
     .sort((a, b) => b.value - a.value)
     .slice(0, 10)
@@ -77,8 +80,8 @@ function Top10Chart({ stats }: { stats: UnifiedStats }) {
 }
 
 // Gráfico 2: barras agrupadas por fase para os top 8 times
-function PhasesChart({ stats }: { stats: UnifiedStats }) {
-  const top8 = TEAMS
+function PhasesChart({ stats, teams }: { stats: UnifiedStats; teams: TeamView[] }) {
+  const top8 = teams
     .map((t, i) => ({ ...t, idx: i }))
     .sort((a, b) => stats.champion[b.idx] - stats.champion[a.idx])
     .slice(0, 8);
@@ -130,8 +133,8 @@ function PhasesChart({ stats }: { stats: UnifiedStats }) {
 }
 
 // Gráfico 3: pizza divisão do título
-function PizzaChart({ stats }: { stats: UnifiedStats }) {
-  const sorted = TEAMS
+function PizzaChart({ stats, teams }: { stats: UnifiedStats; teams: TeamView[] }) {
+  const sorted = teams
     .map((t, i) => ({ name: `${t.flag} ${t.name}`, value: stats.champion[i] }))
     .sort((a, b) => b.value - a.value);
 
@@ -171,8 +174,9 @@ function PizzaChart({ stats }: { stats: UnifiedStats }) {
   );
 }
 
-export function ChartsSection({ stats }: Props) {
+export function ChartsSection({ stats, teamsByIndex }: Props) {
   const [tab, setTab] = useState<Tab>('top10');
+  const teams: TeamView[] = teamsByIndex ?? TEAMS;
 
   const TABS: { id: Tab; label: string }[] = [
     { id: 'top10', label: 'Top 10 Campeões' },
@@ -201,9 +205,9 @@ export function ChartsSection({ stats }: Props) {
         </div>
       </div>
       <div className="p-4">
-        {tab === 'top10' && <Top10Chart stats={stats} />}
-        {tab === 'fases' && <PhasesChart stats={stats} />}
-        {tab === 'pizza' && <PizzaChart stats={stats} />}
+        {tab === 'top10' && <Top10Chart stats={stats} teams={teams} />}
+        {tab === 'fases' && <PhasesChart stats={stats} teams={teams} />}
+        {tab === 'pizza' && <PizzaChart stats={stats} teams={teams} />}
       </div>
     </div>
   );

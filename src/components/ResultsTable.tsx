@@ -1,34 +1,26 @@
 import { useState } from 'react';
 import { ChevronUp, ChevronDown, ChevronsUpDown, Info } from 'lucide-react';
 import { TEAMS } from '../data/teams';
-import type { UnifiedStats } from '../lib/models/types';
-import { POISSON_V1_DEFAULTS } from '../data/poissonV1Lambdas';
-import { POISSON_TEAMS } from '../lib/poisson/sampling';
-import type { ModelId } from '../lib/models/types';
+import type { TeamView } from '../lib/custom/types';
 
-interface Props {
-  stats: UnifiedStats;
-  modelId: ModelId;
+// Coluna de estatística genérica. O callsite (SimulateTab / CustomSimulator)
+// monta a lista a partir do shape específico dos seus stats.
+export interface ResultsColumn {
+  key: string;
+  label: string;
+  short: string;
+  values: number[];   // valor por índice de time
 }
 
-type SortKey =
-  | 'top2'
-  | 'qualified'
-  | 'r16'
-  | 'qf'
-  | 'sf'
-  | 'final'
-  | 'champion';
-
-const COLS: { key: SortKey; label: string; short: string }[] = [
-  { key: 'top2', label: 'Top 2 no Grupo', short: 'Top 2' },
-  { key: 'qualified', label: 'Classificado', short: 'Class.' },
-  { key: 'r16', label: 'Oitavas', short: 'Oitavas' },
-  { key: 'qf', label: 'Quartas', short: 'Quartas' },
-  { key: 'sf', label: 'Semifinal', short: 'Semi' },
-  { key: 'final', label: 'Final', short: 'Final' },
-  { key: 'champion', label: 'Campeão', short: 'Campeão' },
-];
+interface Props {
+  columns: ResultsColumn[];
+  // Default = TEAMS (Copa 2026). Custom passa a lista de times do torneio.
+  teamsByIndex?: TeamView[];
+  // Marca times com badge "estimado" (V1/V2 históricos). Default = nunca.
+  isEstimateByIndex?: (idx: number) => boolean;
+  // Coluna usada como ordenação default (key de uma das colunas).
+  initialSortKey?: string;
+}
 
 function colorClass(pct: number): string {
   if (pct >= 50) return 'bg-emerald-100 text-emerald-800 font-semibold';
@@ -43,18 +35,19 @@ function fmt(pct: number): string {
   return pct.toFixed(3) + '%';
 }
 
-// Para o modelo Poisson, checa se o time tem λ estimado (badge informativo).
-function isEstimateFor(modelId: ModelId, idx: number): boolean {
-  if (modelId === 'poissonV1') return POISSON_V1_DEFAULTS[idx]?.source === 'estimate';
-  if (modelId === 'poissonV2') return POISSON_TEAMS[idx]?.source === 'estimate';
-  return false;
-}
+export function ResultsTable({
+  columns,
+  teamsByIndex,
+  isEstimateByIndex,
+  initialSortKey,
+}: Props) {
+  const resolvedTeams: TeamView[] = teamsByIndex ?? TEAMS;
+  const defaultSortKey = initialSortKey ?? columns[columns.length - 1]?.key ?? '';
 
-export function ResultsTable({ stats, modelId }: Props) {
-  const [sortKey, setSortKey] = useState<SortKey>('champion');
+  const [sortKey, setSortKey] = useState<string>(defaultSortKey);
   const [sortDir, setSortDir] = useState<'desc' | 'asc'>('desc');
 
-  const handleSort = (key: SortKey) => {
+  const handleSort = (key: string) => {
     if (key === sortKey) {
       setSortDir(d => (d === 'desc' ? 'asc' : 'desc'));
     } else {
@@ -63,24 +56,22 @@ export function ResultsTable({ stats, modelId }: Props) {
     }
   };
 
-  const rows = TEAMS.map((t, i) => ({
+  // Mapa key → coluna para lookup rápido na ordenação.
+  const colByKey = new Map(columns.map(c => [c.key, c]));
+  const sortCol = colByKey.get(sortKey);
+
+  const rows = resolvedTeams.map((t, i) => ({
     idx: i,
     name: t.name,
     flag: t.flag,
-    isEstimate: isEstimateFor(modelId, i),
-    top2: stats.top2[i],
-    qualified: stats.qualified[i],
-    r16: stats.r16[i],
-    qf: stats.qf[i],
-    sf: stats.sf[i],
-    final: stats.final[i],
-    champion: stats.champion[i],
+    isEstimate: isEstimateByIndex?.(i) ?? false,
   })).sort((a, b) => {
-    const diff = a[sortKey] - b[sortKey];
+    if (!sortCol) return 0;
+    const diff = (sortCol.values[a.idx] ?? 0) - (sortCol.values[b.idx] ?? 0);
     return sortDir === 'desc' ? -diff : diff;
   });
 
-  const SortIcon = ({ k }: { k: SortKey }) => {
+  const SortIcon = ({ k }: { k: string }) => {
     if (k !== sortKey) return <ChevronsUpDown className="w-3 h-3 opacity-40 inline ml-0.5" />;
     return sortDir === 'desc'
       ? <ChevronDown className="w-3 h-3 inline ml-0.5" />
@@ -104,7 +95,7 @@ export function ResultsTable({ stats, modelId }: Props) {
               <th className="text-left px-3 py-3 sticky left-0 bg-copa-dark z-10 min-w-[160px]">
                 Seleção
               </th>
-              {COLS.map(c => (
+              {columns.map(c => (
                 <th
                   key={c.key}
                   onClick={() => handleSort(c.key)}
@@ -137,13 +128,16 @@ export function ResultsTable({ stats, modelId }: Props) {
                     </span>
                   )}
                 </td>
-                {COLS.map(c => (
-                  <td key={c.key} className="px-3 py-2 text-right">
-                    <span className={`px-2 py-0.5 rounded-lg text-xs ${colorClass(r[c.key])}`}>
-                      {fmt(r[c.key])}
-                    </span>
-                  </td>
-                ))}
+                {columns.map(c => {
+                  const v = c.values[r.idx] ?? 0;
+                  return (
+                    <td key={c.key} className="px-3 py-2 text-right">
+                      <span className={`px-2 py-0.5 rounded-lg text-xs ${colorClass(v)}`}>
+                        {fmt(v)}
+                      </span>
+                    </td>
+                  );
+                })}
               </tr>
             ))}
           </tbody>
@@ -151,4 +145,26 @@ export function ResultsTable({ stats, modelId }: Props) {
       </div>
     </div>
   );
+}
+
+// Builder de colunas para a Copa 2026 (UnifiedStats com r16/qf/sf/final).
+// Mantém a apresentação histórica do projeto.
+export function buildCopa2026Columns(stats: {
+  top2: number[];
+  qualified: number[];
+  r16: number[];
+  qf: number[];
+  sf: number[];
+  final: number[];
+  champion: number[];
+}): ResultsColumn[] {
+  return [
+    { key: 'top2',      label: 'Top 2 no Grupo', short: 'Top 2',  values: stats.top2 },
+    { key: 'qualified', label: 'Classificado',   short: 'Class.', values: stats.qualified },
+    { key: 'r16',       label: 'Oitavas',        short: 'Oitavas',values: stats.r16 },
+    { key: 'qf',        label: 'Quartas',        short: 'Quartas',values: stats.qf },
+    { key: 'sf',        label: 'Semifinal',      short: 'Semi',   values: stats.sf },
+    { key: 'final',     label: 'Final',          short: 'Final',  values: stats.final },
+    { key: 'champion',  label: 'Campeão',        short: 'Campeão',values: stats.champion },
+  ];
 }
