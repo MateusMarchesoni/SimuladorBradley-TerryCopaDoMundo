@@ -3,29 +3,43 @@ import { Trophy, ChevronDown, ChevronUp } from 'lucide-react';
 import { TEAMS } from '../data/teams';
 import { GROUPS } from '../data/groups';
 import type {
-  SingleCupResult,
   KnockoutMatchOutcome,
   GroupResult,
 } from '../lib/models/types';
+import type { TeamView } from '../lib/custom/types';
 
 interface Props {
-  result: SingleCupResult;
-  // Quando true, mostra placar dos jogos (Poisson V1/V2). BT exibe só vencedor.
+  // Estrutura genérica do bracket — qualquer torneio (Copa 2026 ou customizado)
+  // converte para esses três campos no callsite.
+  groupResults: GroupResult[];
+  rounds: KnockoutMatchOutcome[][];   // rounds[last] = [final] (1 jogo)
+  champion: number;                   // índice no universo de times (teamsByIndex ?? TEAMS)
+  roundNames: string[];               // mesmo length que rounds
+  // Mostra placares dos jogos quando o modelo suporta gols (V1/V2).
   showScores: boolean;
+  // Override para custom: lista plana de times indexada por id usado em
+  // teamA/teamB/winner. Default = TEAMS global (Copa 2026).
+  teamsByIndex?: TeamView[];
+  // Override para custom: nomes dos grupos (A, B, …). Default = chaves de GROUPS.
+  groupNames?: string[];
+  // Override para custom: mapa nome→lista de nomes de times (para fallback do
+  // resumo "X e Y classificados" quando o grupo está colapsado).
+  groupTeamLabels?: Record<string, string[]>;
 }
 
-function teamName(idx: number): string {
-  return `${TEAMS[idx].flag} ${TEAMS[idx].name}`;
+function teamName(idx: number, teamsByIndex: TeamView[]): string {
+  const t = teamsByIndex[idx];
+  return t ? `${t.flag} ${t.name}` : `#${idx}`;
 }
 
-// Linha de um jogo do mata-mata. Mostra placar quando disponível e marca
-// pênaltis com sufixo "(pen)".
 function MatchRow({
   match,
   showScores,
+  teamsByIndex,
 }: {
   match: KnockoutMatchOutcome;
   showScores: boolean;
+  teamsByIndex: TeamView[];
 }) {
   const isAWinner = match.winner === match.teamA;
   const isBWinner = match.winner === match.teamB;
@@ -40,7 +54,7 @@ function MatchRow({
             : 'bg-red-50 text-red-400 line-through'
         }`}
       >
-        <span className="truncate">{teamName(match.teamA)}</span>
+        <span className="truncate">{teamName(match.teamA, teamsByIndex)}</span>
         <span className="flex items-center gap-1.5">
           {hasScore && (
             <span className="font-mono text-xs px-1.5 py-0.5 bg-white/60 rounded">
@@ -57,7 +71,7 @@ function MatchRow({
             : 'bg-red-50 text-red-400 line-through'
         }`}
       >
-        <span className="truncate">{teamName(match.teamB)}</span>
+        <span className="truncate">{teamName(match.teamB, teamsByIndex)}</span>
         <span className="flex items-center gap-1.5">
           {hasScore && (
             <span className="font-mono text-xs px-1.5 py-0.5 bg-white/60 rounded">
@@ -80,10 +94,12 @@ function RoundSection({
   title,
   matches,
   showScores,
+  teamsByIndex,
 }: {
   title: string;
   matches: KnockoutMatchOutcome[];
   showScores: boolean;
+  teamsByIndex: TeamView[];
 }) {
   const [open, setOpen] = useState(true);
   return (
@@ -98,7 +114,7 @@ function RoundSection({
       {open && (
         <div className="px-4 pb-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
           {matches.map((m, i) => (
-            <MatchRow key={i} match={m} showScores={showScores} />
+            <MatchRow key={i} match={m} showScores={showScores} teamsByIndex={teamsByIndex} />
           ))}
         </div>
       )}
@@ -106,18 +122,20 @@ function RoundSection({
   );
 }
 
-// Card de um grupo: cabeçalho com os 2 classificados + tabela completa (pts/SG/GP).
 function GroupSection({
   groupName,
   result,
   showScores,
+  teamsByIndex,
+  fallbackTeamLabels,
 }: {
   groupName: string;
   result: GroupResult;
   showScores: boolean;
+  teamsByIndex: TeamView[];
+  fallbackTeamLabels: string[];
 }) {
   const [open, setOpen] = useState(false);
-  const groupTeams = GROUPS[groupName];
 
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-100">
@@ -153,7 +171,7 @@ function GroupSection({
                   }`}
                 >
                   <td className="py-1">
-                    {pos + 1}. {TEAMS[s.teamIndex].flag} {TEAMS[s.teamIndex].name}
+                    {pos + 1}. {teamName(s.teamIndex, teamsByIndex)}
                   </td>
                   <td className="text-right py-1 px-1">{s.points}</td>
                   {showScores && (
@@ -178,11 +196,13 @@ function GroupSection({
               <div className="mt-1 space-y-0.5">
                 {result.matches.map((m, i) => (
                   <div key={i} className="flex items-center justify-between text-gray-600">
-                    <span className="truncate">{TEAMS[m.teamA].name}</span>
+                    <span className="truncate">{teamsByIndex[m.teamA]?.name ?? `#${m.teamA}`}</span>
                     <span className="font-mono text-copa-dark font-semibold mx-2">
                       {m.goalsA} × {m.goalsB}
                     </span>
-                    <span className="truncate text-right">{TEAMS[m.teamB].name}</span>
+                    <span className="truncate text-right">
+                      {teamsByIndex[m.teamB]?.name ?? `#${m.teamB}`}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -192,16 +212,28 @@ function GroupSection({
       )}
       {!open && (
         <div className="px-3 pb-2 text-xs text-gray-500">
-          {groupTeams.slice(0, 2).join(' · ')} classificados
+          {fallbackTeamLabels.slice(0, 2).join(' · ')} classificados
         </div>
       )}
     </div>
   );
 }
 
-export function SingleBracket({ result, showScores }: Props) {
-  const groupNames = Object.keys(GROUPS);
-  const champion = result.knockout.champion;
+export function SingleBracket({
+  groupResults,
+  rounds,
+  champion,
+  roundNames,
+  showScores,
+  teamsByIndex,
+  groupNames,
+  groupTeamLabels,
+}: Props) {
+  // Fallback para Copa 2026: TEAMS global + nomes de grupos do GROUPS.
+  const resolvedTeams: TeamView[] = teamsByIndex ?? TEAMS;
+  const resolvedGroupNames: string[] = groupNames ?? Object.keys(GROUPS);
+  const resolvedTeamLabels = (gn: string) =>
+    groupTeamLabels?.[gn] ?? GROUPS[gn] ?? [];
 
   return (
     <div className="flex flex-col gap-5">
@@ -213,7 +245,7 @@ export function SingleBracket({ result, showScores }: Props) {
             Campeão desta Copa
           </p>
           <p className="text-white font-extrabold text-2xl">
-            {TEAMS[champion].flag} {TEAMS[champion].name}
+            {teamName(champion, resolvedTeams)}
           </p>
         </div>
       </div>
@@ -222,43 +254,38 @@ export function SingleBracket({ result, showScores }: Props) {
       <div>
         <h3 className="text-base font-bold text-copa-dark mb-2">Fase de Grupos</h3>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
-          {groupNames.map((g, i) => (
+          {resolvedGroupNames.map((g, i) => (
             <GroupSection
               key={g}
               groupName={g}
-              result={result.groupResults[i]}
+              result={groupResults[i]}
               showScores={showScores}
+              teamsByIndex={resolvedTeams}
+              fallbackTeamLabels={resolvedTeamLabels(g)}
             />
           ))}
         </div>
       </div>
 
-      {/* Mata-mata */}
-      <RoundSection
-        title="Rodada de 32 (16-avos de Final)"
-        matches={result.knockout.r32}
-        showScores={showScores}
-      />
-      <RoundSection
-        title="Oitavas de Final"
-        matches={result.knockout.r16}
-        showScores={showScores}
-      />
-      <RoundSection
-        title="Quartas de Final"
-        matches={result.knockout.qf}
-        showScores={showScores}
-      />
-      <RoundSection
-        title="Semifinais"
-        matches={result.knockout.sf}
-        showScores={showScores}
-      />
-      <RoundSection
-        title="Final"
-        matches={[result.knockout.final]}
-        showScores={showScores}
-      />
+      {/* Mata-mata: rodadas dinâmicas */}
+      {rounds.map((matches, idx) => (
+        <RoundSection
+          key={idx}
+          title={roundNames[idx] ?? `Rodada ${idx + 1}`}
+          matches={matches}
+          showScores={showScores}
+          teamsByIndex={resolvedTeams}
+        />
+      ))}
     </div>
   );
 }
+
+// Nomes "longos" usados pela Copa 2026 (compatibilidade com a UI antiga).
+export const COPA_2026_ROUND_NAMES = [
+  'Rodada de 32 (16-avos de Final)',
+  'Oitavas de Final',
+  'Quartas de Final',
+  'Semifinais',
+  'Final',
+];
