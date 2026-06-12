@@ -146,7 +146,7 @@ export function TournamentEditor({ tournament, onChange, onSimulate, onCancel }:
           <button
             onClick={onSimulate}
             disabled={!canSimulate}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold text-sm bg-copa-red hover:bg-red-700 text-white shadow-sm transition-colors disabled:opacity-50"
+            className="btn-fest-red flex items-center gap-2 px-4 py-2.5 text-sm"
           >
             <PlayCircle className="w-4 h-4" />
             Salvar e Simular
@@ -155,8 +155,8 @@ export function TournamentEditor({ tournament, onChange, onSimulate, onCancel }:
       </div>
 
       {/* 1. Metadata */}
-      <section className="bg-white rounded-2xl shadow-md p-5">
-        <h2 className="text-lg font-bold text-copa-dark mb-3">1 · Informações do Torneio</h2>
+      <section className="card-fest p-5 border-l-8 border-l-copa-green">
+        <h2 className="font-display text-xl tracking-wide text-copa-dark mb-3">1 · Informações do Torneio 📋</h2>
         <div className="flex flex-col sm:flex-row gap-3">
           <div className="flex-1">
             <label className="block text-xs font-semibold text-gray-600 mb-1">Nome</label>
@@ -190,10 +190,10 @@ export function TournamentEditor({ tournament, onChange, onSimulate, onCancel }:
       </section>
 
       {/* 2. Times */}
-      <section className="bg-white rounded-2xl shadow-md p-5">
+      <section className="card-fest p-5 border-l-8 border-l-copa-blue">
         <div className="flex items-center justify-between flex-wrap gap-2 mb-3">
-          <h2 className="text-lg font-bold text-copa-dark">
-            2 · Times ({t.teams.length})
+          <h2 className="font-display text-xl tracking-wide text-copa-dark">
+            2 · Times ({t.teams.length}) ⚽
           </h2>
           <div className="flex gap-2 flex-wrap">
             <button
@@ -317,10 +317,10 @@ export function TournamentEditor({ tournament, onChange, onSimulate, onCancel }:
       </section>
 
       {/* 3. Grupos */}
-      <section className="bg-white rounded-2xl shadow-md p-5">
+      <section className="card-fest p-5 border-l-8 border-l-copa-gold">
         <div className="flex items-center justify-between flex-wrap gap-2 mb-3">
-          <h2 className="text-lg font-bold text-copa-dark">
-            3 · Grupos ({t.groups.length})
+          <h2 className="font-display text-xl tracking-wide text-copa-dark">
+            3 · Grupos ({t.groups.length}) 🌍
           </h2>
           <div className="flex gap-2">
             <button
@@ -411,8 +411,8 @@ export function TournamentEditor({ tournament, onChange, onSimulate, onCancel }:
       </section>
 
       {/* 4. Mata-mata */}
-      <section className="bg-white rounded-2xl shadow-md p-5">
-        <h2 className="text-lg font-bold text-copa-dark mb-3">4 · Mata-mata</h2>
+      <section className="card-fest p-5 border-l-8 border-l-copa-red">
+        <h2 className="font-display text-xl tracking-wide text-copa-dark mb-3">4 · Mata-mata 🏆</h2>
 
         <div className="flex flex-col gap-3">
           <div>
@@ -490,10 +490,10 @@ export function TournamentEditor({ tournament, onChange, onSimulate, onCancel }:
         <button
           onClick={onSimulate}
           disabled={!canSimulate}
-          className="flex items-center gap-2 px-5 py-3 rounded-2xl font-extrabold text-white bg-copa-red hover:bg-red-700 disabled:opacity-50 shadow-md"
+          className="btn-fest-red flex items-center gap-2 px-5 py-3"
         >
           <Save className="w-4 h-4" />
-          Salvar e Simular
+          Salvar e Simular ⚽
         </button>
       </div>
     </main>

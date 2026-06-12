@@ -194,8 +194,8 @@ export function CustomSimulator({ tournament, onBack }: Props) {
           <ArrowLeft className="w-4 h-4" />
           Voltar
         </button>
-        <h2 className="text-lg font-bold text-copa-dark">{tournament.name}</h2>
-        <span className="text-xs text-gray-500 font-mono">
+        <h2 className="font-display text-xl tracking-wide text-copa-dark">🏆 {tournament.name}</h2>
+        <span className="text-xs text-copa-dark/60 font-mono">
           {tournament.modelId} · {tournament.teams.length} times · {tournament.groups.length} grupos
         </span>
       </div>
@@ -235,10 +235,10 @@ export function CustomSimulator({ tournament, onBack }: Props) {
       {showBracket && singleResult && (
         <div>
           <div className="flex items-center justify-between mb-3">
-            <h2 className="text-xl font-bold text-copa-dark">Uma Copa Simulada</h2>
+            <h2 className="font-display text-2xl tracking-wide text-copa-dark">🏆 Uma Copa Simulada</h2>
             <button
               onClick={() => setShowBracket(false)}
-              className="text-sm text-gray-500 hover:text-copa-dark underline"
+              className="text-sm text-copa-dark/50 hover:text-copa-red underline font-semibold transition-colors"
             >
               Fechar
             </button>
@@ -257,9 +257,9 @@ export function CustomSimulator({ tournament, onBack }: Props) {
       )}
 
       {!mcStats && !showBracket && (
-        <div className="text-center py-12 text-gray-400">
-          <p className="text-5xl mb-4">🏆</p>
-          <p className="text-lg font-medium">
+        <div className="card-fest text-center py-12 text-copa-dark/50 animate-pop-in">
+          <p className="text-6xl mb-4 animate-bounce-soft inline-block">🏆</p>
+          <p className="text-lg font-bold">
             Clique em <strong className="text-copa-red">"Simular Copas"</strong> para começar.
           </p>
         </div>

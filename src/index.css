@@ -6,6 +6,8 @@
   body {
     @apply text-copa-dark antialiased;
     font-size: 16px;
+    background: linear-gradient(135deg, #e6fff3 0%, #e8f2ff 35%, #fff3da 70%, #ffe9f0 100%);
+    background-attachment: fixed;
   }
 
   /* Torna range inputs mais bonitos em todos os browsers */
@@ -18,7 +20,7 @@
   input[type='range']::-webkit-slider-runnable-track {
     height: 6px;
     border-radius: 9999px;
-    background: #E5E7EB;
+    background: linear-gradient(90deg, #d7e6ff, #ffe7c2);
   }
 
   input[type='range']::-webkit-slider-thumb {
@@ -26,9 +28,10 @@
     width: 18px;
     height: 18px;
     border-radius: 50%;
-    background: #06A77D;
+    background: #00B874;
+    border: 2px solid #ffffff;
     margin-top: -6px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 6px rgba(18, 39, 90, 0.35);
     cursor: pointer;
   }
 
@@ -36,8 +39,63 @@
     width: 18px;
     height: 18px;
     border-radius: 50%;
-    background: #06A77D;
-    border: none;
+    background: #00B874;
+    border: 2px solid #ffffff;
+    box-shadow: 0 2px 6px rgba(18, 39, 90, 0.35);
     cursor: pointer;
+  }
+}
+
+@layer components {
+  /* Cartão festivo padrão: vidro claro com sombra colorida suave */
+  .card-fest {
+    @apply bg-white/85 backdrop-blur-md rounded-3xl border-2 border-white shadow-[0_12px_36px_-14px_rgba(18,39,90,0.30)];
+  }
+
+  /* Botões temáticos */
+  .btn-fest-red {
+    @apply text-white font-extrabold rounded-2xl shadow-lg bg-gradient-to-r from-copa-red to-orange-500 transition-all duration-200 hover:scale-[1.03] hover:shadow-xl active:scale-95 disabled:opacity-60 disabled:hover:scale-100;
+  }
+  .btn-fest-green {
+    @apply text-white font-bold rounded-2xl shadow-lg bg-gradient-to-r from-copa-green to-emerald-500 transition-all duration-200 hover:scale-[1.03] hover:shadow-xl active:scale-95 disabled:opacity-60 disabled:hover:scale-100;
+  }
+  .btn-fest-gold {
+    @apply text-copa-dark font-bold rounded-2xl shadow-lg bg-gradient-to-r from-copa-gold to-amber-400 transition-all duration-200 hover:scale-[1.03] hover:shadow-xl active:scale-95 disabled:opacity-60 disabled:hover:scale-100;
+  }
+  .btn-fest-ghost {
+    @apply bg-white/80 text-copa-dark border-2 border-copa-dark/10 rounded-2xl font-bold shadow-sm transition-all duration-200 hover:border-copa-blue hover:text-copa-blue hover:scale-[1.02] active:scale-95 disabled:opacity-50 disabled:hover:scale-100;
+  }
+
+  /* Barra de progresso arco-íris animada */
+  .progress-track {
+    @apply w-full bg-copa-dark/10 rounded-full overflow-hidden;
+  }
+  .progress-fill {
+    @apply h-full rounded-full animate-shimmer;
+    background-image: linear-gradient(90deg, #FFB703, #FF2E63, #2D7DFF, #00B874, #FFB703);
+    background-size: 300% 100%;
+  }
+
+  /* Peça de confete (posicionar com left/animation-delay/background inline) */
+  .confetti-piece {
+    @apply absolute w-1.5 h-3 rounded-sm pointer-events-none;
+    top: -16px;
+    animation: confetti-fall 3.4s linear infinite;
+  }
+
+  /* Faixa multicolorida (rodapé de cabeçalhos e cartões) */
+  .fest-stripe {
+    background: linear-gradient(90deg, #00B874 0% 20%, #FFB703 20% 40%, #FF2E63 40% 60%, #2D7DFF 60% 80%, #8B5CF6 80% 100%);
+  }
+}
+
+@keyframes confetti-fall {
+  0% {
+    transform: translateY(-16px) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(var(--confetti-distance, 180px)) rotate(540deg);
+    opacity: 0;
   }
 }

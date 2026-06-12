@@ -18,9 +18,9 @@ export function ValidationPanel({ stats }: { stats: UnifiedStats }) {
   const calibrated = meanOK && distOK;
 
   return (
-    <div className="bg-white rounded-2xl shadow-md p-5">
+    <div className="card-fest p-5 animate-pop-in">
       <div className="flex items-center justify-between flex-wrap gap-2 mb-3">
-        <h3 className="text-base font-bold text-copa-dark">Validação do modelo</h3>
+        <h3 className="font-display text-lg tracking-wide text-copa-dark">✅ Validação do modelo</h3>
         {calibrated ? (
           <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold">
             <CheckCircle2 className="w-4 h-4" />

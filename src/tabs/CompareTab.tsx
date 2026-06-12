@@ -168,19 +168,19 @@ export function CompareTab() {
 
   return (
     <main className="max-w-5xl mx-auto px-4 py-6 flex flex-col gap-5">
-      <div className="bg-white rounded-2xl shadow-md p-4">
-        <h2 className="text-lg font-bold text-copa-dark mb-1">Comparar Modelos</h2>
-        <p className="text-xs text-gray-500 leading-relaxed">
+      <div className="card-fest p-4 border-l-8 border-l-copa-purple">
+        <h2 className="font-display text-xl tracking-wide text-copa-dark mb-1">⚖️ Comparar Modelos</h2>
+        <p className="text-xs text-copa-dark/60 leading-relaxed">
           Roda os três modelos (Bradley-Terry, Poisson V1 e Poisson V2) com a mesma quantidade de
           Copas e compara as probabilidades de campeão. Times onde os modelos discordam mais
           revelam a sensibilidade da previsão aos pressupostos.
         </p>
       </div>
 
-      <div className="bg-white rounded-2xl shadow-md p-5 flex flex-col gap-4">
+      <div className="card-fest p-5 flex flex-col gap-4">
         <div>
-          <p className="text-sm font-semibold text-copa-dark mb-2">
-            Número de simulações por modelo
+          <p className="text-sm font-bold text-copa-dark mb-2 flex items-center gap-1.5">
+            🎲 Número de simulações por modelo
           </p>
           <div className="flex gap-2 flex-wrap">
             {SIM_OPTIONS.map(n => (
@@ -188,10 +188,10 @@ export function CompareTab() {
                 key={n}
                 onClick={() => setNumSims(n)}
                 disabled={running}
-                className={`px-4 py-2 rounded-xl font-bold text-sm border-2 transition-all ${
+                className={`px-4 py-2 rounded-xl font-bold text-sm border-2 transition-all duration-200 ${
                   numSims === n
-                    ? 'bg-copa-dark text-white border-copa-dark'
-                    : 'bg-white text-copa-dark border-gray-300 hover:border-copa-dark'
+                    ? 'bg-gradient-to-r from-copa-blue to-copa-purple text-white border-transparent shadow-md scale-[1.04]'
+                    : 'bg-white/80 text-copa-dark border-copa-dark/15 hover:border-copa-blue hover:scale-[1.03]'
                 } disabled:opacity-50`}
               >
                 {n.toLocaleString('pt-BR')}
@@ -203,7 +203,7 @@ export function CompareTab() {
         <button
           onClick={handleRun}
           disabled={running}
-          className="flex items-center justify-center gap-2 bg-copa-red hover:bg-red-700 text-white font-extrabold text-lg rounded-2xl py-4 shadow-md transition-colors disabled:opacity-60 min-h-[56px]"
+          className="btn-fest-red flex items-center justify-center gap-2 text-lg py-4 min-h-[56px]"
         >
           {running ? (
             <Loader2 className="w-6 h-6 animate-spin" />
@@ -216,16 +216,16 @@ export function CompareTab() {
         {running && (
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             {MODELS.map(id => (
-              <div key={id} className="bg-copa-bg rounded-xl p-3">
+              <div key={id} className="bg-copa-bg rounded-xl p-3 border border-copa-gold/30">
                 <div className="flex items-center justify-between mb-1.5">
                   <span className="text-xs font-bold text-copa-dark">{MODEL_META[id].short}</span>
-                  <span className="text-xs text-gray-500 font-mono">
+                  <span className="text-xs text-copa-dark/60 font-mono">
                     {Math.round(runs[id].progress * 100)}%
                   </span>
                 </div>
-                <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+                <div className="progress-track h-2">
                   <div
-                    className="h-2 bg-copa-gold rounded-full transition-all duration-200"
+                    className="progress-fill h-2 transition-all duration-200"
                     style={{ width: `${Math.round(runs[id].progress * 100)}%` }}
                   />
                 </div>
@@ -237,9 +237,9 @@ export function CompareTab() {
 
       {allDone && (
         <>
-          <div className="bg-white rounded-2xl shadow-md p-5">
-            <h3 className="text-base font-bold text-copa-dark mb-3">
-              Top 10 favoritos por modelo
+          <div className="card-fest p-5 animate-pop-in">
+            <h3 className="font-display text-lg tracking-wide text-copa-dark mb-3">
+              🏅 Top 10 favoritos por modelo
             </h3>
             <ResponsiveContainer width="100%" height={360}>
               <BarChart data={top10} margin={{ left: 4, right: 8, top: 4, bottom: 60 }}>
@@ -251,26 +251,26 @@ export function CompareTab() {
                   contentStyle={{ borderRadius: 8, fontSize: 12 }}
                 />
                 <Legend wrapperStyle={{ paddingTop: 12, fontSize: 12 }} />
-                <Bar dataKey="BT" fill="#0E5C3A" radius={[3, 3, 0, 0]} />
-                <Bar dataKey="V1 Histórico" fill="#E63946" radius={[3, 3, 0, 0]} />
+                <Bar dataKey="BT" fill="#00B874" radius={[3, 3, 0, 0]} />
+                <Bar dataKey="V1 Histórico" fill="#FF2E63" radius={[3, 3, 0, 0]} />
                 <Bar dataKey="V2 Forças" fill="#FFB703" radius={[3, 3, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
 
-          <div className="bg-white rounded-2xl shadow-md overflow-hidden">
-            <div className="p-4 border-b border-gray-100">
-              <h3 className="text-base font-bold text-copa-dark">
-                Probabilidade de campeão por modelo
+          <div className="card-fest overflow-hidden animate-pop-in">
+            <div className="p-4 border-b-2 border-copa-gold/30">
+              <h3 className="font-display text-lg tracking-wide text-copa-dark">
+                👑 Probabilidade de campeão por modelo
               </h3>
-              <p className="text-xs text-gray-500 mt-0.5">
+              <p className="text-xs text-copa-dark/60 mt-0.5">
                 Clique no cabeçalho para ordenar. "Δ" é a maior divergência entre os três modelos.
               </p>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="bg-copa-dark text-white">
+                  <tr className="bg-gradient-to-r from-copa-dark to-copa-blue text-white">
                     <Th k="name" sortKey={sortKey} sortDir={sortDir} onSort={handleSort} align="left" sticky>
                       Seleção
                     </Th>
@@ -310,7 +310,7 @@ export function CompareTab() {
             </div>
           </div>
 
-          <div className="bg-copa-bg border border-gray-200 rounded-2xl p-4 text-xs text-gray-600">
+          <div className="bg-copa-bg/90 backdrop-blur-sm border-2 border-copa-gold/30 rounded-2xl p-4 text-xs text-gray-600">
             <p className="font-semibold text-copa-dark mb-1">Verificação: soma de % campeão</p>
             <p>
               BT: <span className="font-mono">{sums.bt.toFixed(2)}%</span> · V1:{' '}
@@ -325,9 +325,9 @@ export function CompareTab() {
       )}
 
       {!allDone && !running && (
-        <div className="text-center py-12 text-gray-400">
-          <p className="text-4xl mb-3">🔬</p>
-          <p className="text-base font-medium">
+        <div className="card-fest text-center py-12 text-copa-dark/50 animate-pop-in">
+          <p className="text-5xl mb-3 animate-bounce-soft inline-block">🔬</p>
+          <p className="text-base font-bold">
             Clique em <strong className="text-copa-red">Rodar nos 3 Modelos</strong> para comparar.
           </p>
         </div>
@@ -375,7 +375,7 @@ function Th({
   return (
     <th
       onClick={() => onSort(k)}
-      className={`px-3 py-3 cursor-pointer hover:bg-gray-700 whitespace-nowrap select-none ${
+      className={`px-3 py-3 cursor-pointer hover:bg-white/15 transition-colors whitespace-nowrap select-none ${
         align === 'left' ? 'text-left' : 'text-right'
       } ${sticky ? 'sticky left-0 bg-copa-dark z-10 min-w-[160px]' : ''}`}
     >

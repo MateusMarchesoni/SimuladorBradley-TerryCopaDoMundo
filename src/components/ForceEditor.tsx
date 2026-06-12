@@ -104,8 +104,8 @@ export function ForceEditor({ forces, onForcesChange, onClose }: Props) {
       {/* Painel lateral */}
       <div className="relative ml-auto w-full max-w-sm sm:max-w-md bg-white h-full flex flex-col shadow-2xl">
         {/* Cabeçalho */}
-        <div className="flex items-center justify-between px-4 py-4 border-b border-gray-100 bg-copa-dark text-white">
-          <h2 className="font-bold text-lg">Editar Forças dos Times</h2>
+        <div className="flex items-center justify-between px-4 py-4 bg-gradient-to-r from-copa-green via-copa-blue to-copa-purple bg-[length:250%_250%] animate-gradient-x text-white">
+          <h2 className="font-display text-lg tracking-wide">⚙️ Editar Forças dos Times</h2>
           <button onClick={onClose} className="p-1 hover:bg-white/20 rounded-lg transition-colors">
             <X className="w-5 h-5" />
           </button>
@@ -121,13 +121,13 @@ export function ForceEditor({ forces, onForcesChange, onClose }: Props) {
           </button>
           <button
             onClick={handleExport}
-            className="flex items-center gap-1.5 px-3 py-2 text-sm bg-copa-green hover:bg-emerald-700 rounded-xl font-semibold text-white transition-colors"
+            className="btn-fest-green flex items-center gap-1.5 px-3 py-2 text-sm !rounded-xl"
           >
             <Download className="w-4 h-4" /> Exportar CSV
           </button>
           <button
             onClick={() => fileInputRef.current?.click()}
-            className="flex items-center gap-1.5 px-3 py-2 text-sm bg-copa-gold hover:bg-yellow-500 rounded-xl font-semibold text-white transition-colors"
+            className="btn-fest-gold flex items-center gap-1.5 px-3 py-2 text-sm !rounded-xl"
           >
             <Upload className="w-4 h-4" /> Importar CSV
           </button>

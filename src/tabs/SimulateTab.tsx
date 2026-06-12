@@ -188,9 +188,9 @@ export function SimulateTab({ onModelChange }: SimulateTabProps = {}) {
       <ModelToggle activeId={modelId} onChange={handleModelChange} disabled={isRunning} />
 
       {/* Cartão descritivo do modelo ativo */}
-      <div className="bg-white rounded-2xl shadow-md p-4">
-        <h2 className="text-lg font-bold text-copa-dark mb-1">{meta.label}</h2>
-        <p className="text-xs text-gray-500 leading-relaxed">{meta.tooltip}</p>
+      <div className="card-fest p-4 border-l-8 border-l-copa-blue">
+        <h2 className="font-display text-xl tracking-wide text-copa-dark mb-1">🧠 {meta.label}</h2>
+        <p className="text-xs text-copa-dark/60 leading-relaxed">{meta.tooltip}</p>
       </div>
 
       {/* Controles principais */}
@@ -208,10 +208,10 @@ export function SimulateTab({ onModelChange }: SimulateTabProps = {}) {
         <div className="flex flex-wrap gap-2">
           <button
             onClick={() => setShowEditor(true)}
-            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold text-sm transition-colors shadow-sm ${
+            className={`flex items-center gap-2 px-4 py-2.5 text-sm ${
               hasCustomParams
-                ? 'bg-copa-gold text-white'
-                : 'bg-white text-copa-dark border border-gray-200 hover:border-copa-dark'
+                ? 'btn-fest-gold animate-pulse-glow'
+                : 'btn-fest-ghost'
             }`}
           >
             <Settings className="w-4 h-4" />
@@ -227,10 +227,10 @@ export function SimulateTab({ onModelChange }: SimulateTabProps = {}) {
           {meta.hasScores && (
             <button
               onClick={handleMatchToggle}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold text-sm transition-colors shadow-sm ${
+              className={`flex items-center gap-2 px-4 py-2.5 text-sm ${
                 showMatchMode
-                  ? 'bg-copa-dark text-white'
-                  : 'bg-white text-copa-dark border border-gray-200 hover:border-copa-dark'
+                  ? 'rounded-2xl font-bold text-white shadow-lg bg-gradient-to-r from-copa-dark to-copa-blue transition-all hover:scale-[1.02] active:scale-95'
+                  : 'btn-fest-ghost'
               }`}
             >
               <Swords className="w-4 h-4" />
@@ -262,10 +262,10 @@ export function SimulateTab({ onModelChange }: SimulateTabProps = {}) {
       {showBracket && singleResult && (
         <div>
           <div className="flex items-center justify-between mb-3">
-            <h2 className="text-xl font-bold text-copa-dark">Uma Copa Simulada</h2>
+            <h2 className="font-display text-2xl tracking-wide text-copa-dark">🏆 Uma Copa Simulada</h2>
             <button
               onClick={() => setShowBracket(false)}
-              className="text-sm text-gray-500 hover:text-copa-dark underline"
+              className="text-sm text-copa-dark/50 hover:text-copa-red underline font-semibold transition-colors"
             >
               Fechar
             </button>
@@ -287,13 +287,13 @@ export function SimulateTab({ onModelChange }: SimulateTabProps = {}) {
       )}
 
       {!mcStats && !showBracket && !showMatchMode && (
-        <div className="text-center py-12 text-gray-400">
-          <p className="text-5xl mb-4">⚽</p>
-          <p className="text-lg font-medium">
+        <div className="card-fest text-center py-12 text-copa-dark/50 animate-pop-in">
+          <p className="text-6xl mb-4 animate-bounce-soft inline-block">⚽</p>
+          <p className="text-lg font-bold">
             Clique em <strong className="text-copa-red">"Simular Copas"</strong> para ver os resultados
           </p>
           <p className="text-sm mt-1">
-            ou <strong className="text-copa-green">"Ver 1 Copa"</strong> para o chaveamento completo
+            ou <strong className="text-copa-green">"Ver 1 Copa"</strong> para o chaveamento completo 🎉
           </p>
         </div>
       )}
@@ -339,7 +339,7 @@ function ModelToggle({
   return (
     <div
       role="tablist"
-      className="inline-flex flex-wrap p-1 bg-white rounded-2xl shadow-sm border border-gray-200 gap-1 self-start"
+      className="inline-flex flex-wrap p-1.5 bg-white/75 backdrop-blur-md rounded-full shadow-lg border-2 border-white gap-1 self-start"
     >
       {ids.map(id => {
         const m = MODEL_META[id];
@@ -352,10 +352,10 @@ function ModelToggle({
             disabled={disabled}
             onClick={() => onChange(id)}
             title={m.tooltip}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold transition-colors ${
+            className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold transition-all duration-200 ${
               active
-                ? 'bg-copa-dark text-white shadow'
-                : 'text-copa-dark hover:bg-gray-50'
+                ? 'bg-gradient-to-r from-copa-green to-emerald-500 text-white shadow-md scale-[1.04]'
+                : 'text-copa-dark hover:bg-white hover:scale-[1.02]'
             } disabled:opacity-50`}
           >
             {m.label}

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Trophy, ChevronDown, ChevronUp } from 'lucide-react';
 import { TEAMS } from '../data/teams';
 import { GROUPS } from '../data/groups';
+import { Confetti } from './fx/Confetti';
 import type {
   KnockoutMatchOutcome,
   GroupResult,
@@ -50,8 +51,8 @@ function MatchRow({
       <div
         className={`flex items-center justify-between px-3 py-1.5 rounded-lg gap-2 ${
           isAWinner
-            ? 'bg-emerald-100 text-emerald-900 font-semibold'
-            : 'bg-red-50 text-red-400 line-through'
+            ? 'bg-gradient-to-r from-emerald-100 to-emerald-50 text-emerald-900 font-bold border-l-4 border-copa-green'
+            : 'bg-rose-50 text-rose-400 line-through'
         }`}
       >
         <span className="truncate">{teamName(match.teamA, teamsByIndex)}</span>
@@ -67,8 +68,8 @@ function MatchRow({
       <div
         className={`flex items-center justify-between px-3 py-1.5 rounded-lg gap-2 ${
           isBWinner
-            ? 'bg-emerald-100 text-emerald-900 font-semibold'
-            : 'bg-red-50 text-red-400 line-through'
+            ? 'bg-gradient-to-r from-emerald-100 to-emerald-50 text-emerald-900 font-bold border-l-4 border-copa-green'
+            : 'bg-rose-50 text-rose-400 line-through'
         }`}
       >
         <span className="truncate">{teamName(match.teamB, teamsByIndex)}</span>
@@ -103,10 +104,10 @@ function RoundSection({
 }) {
   const [open, setOpen] = useState(true);
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-100">
+    <div className="card-fest">
       <button
         onClick={() => setOpen(o => !o)}
-        className="w-full flex items-center justify-between px-4 py-3 font-bold text-copa-dark"
+        className="w-full flex items-center justify-between px-4 py-3 font-display tracking-wide text-copa-dark"
       >
         <span>{title}</span>
         {open ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
@@ -138,10 +139,10 @@ function GroupSection({
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-100">
+    <div className="bg-white/85 backdrop-blur-sm rounded-2xl shadow-md border-2 border-white">
       <button
         onClick={() => setOpen(o => !o)}
-        className="w-full flex items-center justify-between px-3 py-2.5 font-semibold text-sm text-copa-dark"
+        className="w-full flex items-center justify-between px-3 py-2.5 font-bold text-sm text-copa-dark"
       >
         <span>Grupo {groupName}</span>
         {open ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
@@ -238,13 +239,19 @@ export function SingleBracket({
   return (
     <div className="flex flex-col gap-5">
       {/* Campeão destaque */}
-      <div className="bg-gradient-to-r from-copa-gold to-yellow-400 rounded-2xl p-5 flex items-center gap-4 shadow-lg">
-        <Trophy className="w-10 h-10 text-white drop-shadow-md flex-shrink-0" strokeWidth={2.5} />
-        <div>
-          <p className="text-white/80 font-semibold text-sm uppercase tracking-wide">
-            Campeão desta Copa
+      <div className="relative overflow-hidden bg-gradient-to-r from-copa-gold via-amber-400 to-orange-400 bg-[length:250%_250%] animate-gradient-x rounded-3xl p-6 flex items-center gap-4 shadow-xl animate-pop-in">
+        <Confetti count={20} distance="160px" />
+        <span aria-hidden className="absolute -right-4 -bottom-6 text-7xl opacity-25 animate-wiggle select-none">
+          🏆
+        </span>
+        <div className="relative w-14 h-14 rounded-2xl bg-white/25 backdrop-blur flex items-center justify-center shadow-md animate-bounce-soft flex-shrink-0">
+          <Trophy className="w-9 h-9 text-white drop-shadow-md" strokeWidth={2.5} />
+        </div>
+        <div className="relative">
+          <p className="text-white/90 font-bold text-sm uppercase tracking-widest">
+            🎉 Campeão desta Copa 🎉
           </p>
-          <p className="text-white font-extrabold text-2xl">
+          <p className="text-white font-display text-3xl tracking-wide drop-shadow-md">
             {teamName(champion, resolvedTeams)}
           </p>
         </div>
@@ -252,7 +259,7 @@ export function SingleBracket({
 
       {/* Fase de grupos */}
       <div>
-        <h3 className="text-base font-bold text-copa-dark mb-2">Fase de Grupos</h3>
+        <h3 className="font-display text-lg tracking-wide text-copa-dark mb-2">⚽ Fase de Grupos</h3>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
           {resolvedGroupNames.map((g, i) => (
             <GroupSection
