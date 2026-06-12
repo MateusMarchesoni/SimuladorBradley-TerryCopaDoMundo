@@ -16,6 +16,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Info, Play, RotateCcw, Shuffle } from 'lucide-react';
+import { Confetti } from '../components/fx/Confetti';
 import { TEAMS, TEAM_INDEX_MAP } from '../data/teams';
 import { POISSON_V1_DEFAULTS } from '../data/poissonV1Lambdas';
 import { POISSON_TEAMS } from '../lib/poisson/sampling';
@@ -220,9 +221,9 @@ export function MinuteByMinuteTab({ activeModelId }: MinuteByMinuteProps) {
 
   return (
     <main className="max-w-5xl mx-auto px-4 py-6 flex flex-col gap-5">
-      <div className="bg-white rounded-2xl shadow-md p-4">
-        <h2 className="text-lg font-bold text-copa-dark mb-1">Simulação minuto a minuto</h2>
-        <p className="text-xs text-gray-500 leading-relaxed">
+      <div className="card-fest p-4 border-l-8 border-l-copa-green">
+        <h2 className="font-display text-xl tracking-wide text-copa-dark mb-1">⏱️ Simulação minuto a minuto</h2>
+        <p className="text-xs text-copa-dark/60 leading-relaxed">
           Veja como o modelo Poisson trata gols como eventos independentes no tempo. Cada gol é
           sorteado por Poisson(Λ) e distribuído uniformemente entre os 90 minutos.
         </p>
@@ -239,11 +240,11 @@ export function MinuteByMinuteTab({ activeModelId }: MinuteByMinuteProps) {
         </div>
       )}
 
-      <div className="bg-white rounded-2xl shadow-md p-5 flex flex-col gap-4">
+      <div className="card-fest p-5 flex flex-col gap-4">
         {/* Sub-toggle local de modelo (V1 / V2) */}
         <div
           role="tablist"
-          className="inline-flex p-1 bg-copa-bg rounded-xl border border-gray-200 self-start"
+          className="inline-flex p-1 bg-copa-bg rounded-full border border-copa-gold/40 self-start"
         >
           {(['poissonV1', 'poissonV2'] as PoissonModelId[]).map(id => (
             <button
@@ -252,9 +253,9 @@ export function MinuteByMinuteTab({ activeModelId }: MinuteByMinuteProps) {
               aria-selected={modelId === id}
               onClick={() => setModelId(id)}
               disabled={animating}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${
+              className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all ${
                 modelId === id
-                  ? 'bg-copa-dark text-white shadow'
+                  ? 'bg-gradient-to-r from-copa-green to-emerald-500 text-white shadow'
                   : 'text-copa-dark hover:bg-white'
               } disabled:opacity-50`}
             >
@@ -276,15 +277,15 @@ export function MinuteByMinuteTab({ activeModelId }: MinuteByMinuteProps) {
           <button
             onClick={startNew}
             disabled={sameTeam || animating}
-            className="flex items-center justify-center gap-2 bg-copa-red hover:bg-red-700 text-white font-extrabold rounded-2xl px-5 py-3 shadow-md transition-colors disabled:opacity-60 min-h-[48px]"
+            className="btn-fest-red flex items-center justify-center gap-2 px-5 py-3 min-h-[48px]"
           >
             <Shuffle className="w-5 h-5" />
-            Nova simulação
+            Nova simulação ⚽
           </button>
           <button
             onClick={replay}
             disabled={!run || animating}
-            className="flex items-center justify-center gap-2 bg-copa-green hover:bg-emerald-700 text-white font-bold rounded-2xl px-5 py-3 shadow-md transition-colors disabled:opacity-60 min-h-[48px]"
+            className="btn-fest-green flex items-center justify-center gap-2 px-5 py-3 min-h-[48px]"
           >
             <RotateCcw className="w-5 h-5" />
             Repetir
@@ -293,36 +294,42 @@ export function MinuteByMinuteTab({ activeModelId }: MinuteByMinuteProps) {
       </div>
 
       {run && (
-        <div className="bg-white rounded-2xl shadow-md p-5 flex flex-col gap-4">
-          {/* Placar e minuto */}
+        <div className="card-fest p-5 flex flex-col gap-4 animate-pop-in">
+          {/* Placar e minuto — estilo painel de estádio */}
           <div
-            className={`rounded-2xl p-5 flex items-center justify-between transition-colors duration-300 ${
+            className={`relative overflow-hidden rounded-3xl p-5 flex items-center justify-between transition-colors duration-300 shadow-xl ${
               flashGoal
-                ? 'bg-gradient-to-r from-copa-gold to-yellow-300'
-                : 'bg-copa-dark'
+                ? 'bg-gradient-to-r from-copa-gold via-yellow-300 to-copa-gold'
+                : 'bg-gradient-to-br from-copa-dark via-[#1a3a7a] to-copa-dark'
             }`}
           >
-            <div className="flex flex-col items-center gap-1 flex-1">
-              <span className="text-2xl">{flagFor(teamA)}</span>
+            {!flashGoal && (
+              <span aria-hidden className="absolute -right-4 -bottom-8 text-8xl opacity-10 animate-spin-slow select-none">
+                ⚽
+              </span>
+            )}
+            {flashGoal && <Confetti count={16} distance="170px" />}
+            <div className="relative flex flex-col items-center gap-1 flex-1">
+              <span className={`text-4xl ${flashGoal && goalNow?.team === 'A' ? 'animate-wiggle' : ''}`}>{flagFor(teamA)}</span>
               <span className={`text-xs font-bold uppercase tracking-wide ${flashGoal ? 'text-copa-dark' : 'text-white/80'}`}>
                 {teamA}
               </span>
             </div>
-            <div className="text-center px-4">
-              <p className={`text-5xl font-extrabold font-mono ${flashGoal ? 'text-copa-dark' : 'text-white'}`}>
+            <div className="relative text-center px-4">
+              <p className={`text-5xl sm:text-6xl font-display tracking-wider drop-shadow-md ${flashGoal ? 'text-copa-dark' : 'text-white'}`}>
                 {scoreNow.a} × {scoreNow.b}
               </p>
               <p className={`mt-1 font-mono text-xs ${flashGoal ? 'text-copa-dark/80' : 'text-white/70'}`}>
-                {tick}′ {tick >= 90 && !animating ? '· FIM' : ''}
+                {tick}′ {tick >= 90 && !animating ? '· FIM 🏁' : ''}
               </p>
               {flashGoal && (
-                <p className="text-copa-red font-extrabold uppercase tracking-widest text-xs mt-1">
-                  GOL!
+                <p className="text-copa-red font-display uppercase tracking-widest text-2xl mt-1 animate-bounce">
+                  ⚽ GOOOL!
                 </p>
               )}
             </div>
-            <div className="flex flex-col items-center gap-1 flex-1">
-              <span className="text-2xl">{flagFor(teamB)}</span>
+            <div className="relative flex flex-col items-center gap-1 flex-1">
+              <span className={`text-4xl ${flashGoal && goalNow?.team === 'B' ? 'animate-wiggle' : ''}`}>{flagFor(teamB)}</span>
               <span className={`text-xs font-bold uppercase tracking-wide ${flashGoal ? 'text-copa-dark' : 'text-white/80'}`}>
                 {teamB}
               </span>
@@ -330,9 +337,9 @@ export function MinuteByMinuteTab({ activeModelId }: MinuteByMinuteProps) {
           </div>
 
           {/* Barra de progresso 0..90 */}
-          <div className="w-full bg-gray-100 rounded-full h-2 overflow-hidden">
+          <div className="progress-track h-2.5">
             <div
-              className="h-2 bg-copa-gold rounded-full transition-all duration-100"
+              className="progress-fill h-2.5 transition-all duration-100"
               style={{ width: `${(tick / 90) * 100}%` }}
             />
           </div>
@@ -402,9 +409,9 @@ export function MinuteByMinuteTab({ activeModelId }: MinuteByMinuteProps) {
       )}
 
       {!run && !sameTeam && (
-        <div className="text-center py-12 text-gray-400">
-          <p className="text-4xl mb-3">🕒</p>
-          <p className="text-base font-medium">
+        <div className="card-fest text-center py-12 text-copa-dark/50 animate-pop-in">
+          <p className="text-5xl mb-3 animate-bounce-soft inline-block">🕒</p>
+          <p className="text-base font-bold">
             Clique em <strong className="text-copa-red">Nova simulação</strong> para começar a animação.
           </p>
         </div>

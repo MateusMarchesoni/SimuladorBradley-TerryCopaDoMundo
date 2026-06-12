@@ -234,8 +234,8 @@ export function MatchMode({ modelId }: MatchModeProps) {
       : 'λ_A = λ_atk(A) × λ_def(B) / μ';
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="bg-white rounded-2xl shadow-md p-5 flex flex-col gap-4">
+    <div className="flex flex-col gap-4 animate-pop-in">
+      <div className="card-fest p-5 flex flex-col gap-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <TeamDropdown
             label="Time A"
@@ -272,7 +272,7 @@ export function MatchMode({ modelId }: MatchModeProps) {
           <button
             onClick={handleSimulate}
             disabled={!canSimulate}
-            className="flex items-center justify-center gap-2 bg-copa-red hover:bg-red-700 text-white font-extrabold rounded-2xl px-6 py-3 shadow-md transition-colors disabled:opacity-60 min-h-[48px]"
+            className="btn-fest-red flex items-center justify-center gap-2 px-6 py-3 min-h-[48px]"
           >
             {running ? (
               <Loader2 className="w-5 h-5 animate-spin" />
@@ -290,7 +290,7 @@ export function MatchMode({ modelId }: MatchModeProps) {
 
       {output && (
         <>
-          <div className="bg-white rounded-2xl shadow-md p-5 flex flex-col gap-4">
+          <div className="card-fest p-5 flex flex-col gap-4 animate-pop-in">
             <div className="flex items-center justify-between gap-4 flex-wrap">
               <div>
                 <p className="text-xs uppercase tracking-wide text-gray-500 font-semibold">
@@ -334,9 +334,9 @@ export function MatchMode({ modelId }: MatchModeProps) {
       )}
 
       {!output && (
-        <div className="text-center py-12 text-gray-400">
-          <p className="text-4xl mb-3">⚽</p>
-          <p className="text-base font-medium">
+        <div className="card-fest text-center py-12 text-copa-dark/50">
+          <p className="text-5xl mb-3 animate-bounce-soft inline-block">⚽</p>
+          <p className="text-base font-bold">
             Escolha duas seleções e clique em <strong className="text-copa-red">Simular</strong>.
           </p>
         </div>

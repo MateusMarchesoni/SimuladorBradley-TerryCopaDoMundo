@@ -12,9 +12,9 @@ export function TournamentValidation({ validation }: Props) {
 
   if (errors.length === 0 && warnings.length === 0) {
     return (
-      <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-3 flex items-center gap-2 text-sm text-emerald-800">
-        <CheckCircle2 className="w-4 h-4" />
-        <span className="font-semibold">Torneio válido — pronto para simular.</span>
+      <div className="bg-emerald-50/90 backdrop-blur-sm border-2 border-copa-green/40 rounded-2xl p-3 flex items-center gap-2 text-sm text-emerald-800 shadow-md">
+        <CheckCircle2 className="w-4 h-4 text-copa-green" />
+        <span className="font-bold">Torneio válido — pronto para simular! 🎉</span>
       </div>
     );
   }

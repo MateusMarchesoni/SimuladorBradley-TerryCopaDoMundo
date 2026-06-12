@@ -23,10 +23,10 @@ interface Props {
 }
 
 function colorClass(pct: number): string {
-  if (pct >= 50) return 'bg-emerald-100 text-emerald-800 font-semibold';
-  if (pct >= 20) return 'bg-yellow-100 text-yellow-800';
+  if (pct >= 50) return 'bg-emerald-100 text-emerald-800 font-bold';
+  if (pct >= 20) return 'bg-amber-100 text-amber-800 font-semibold';
   if (pct >= 10) return 'bg-orange-100 text-orange-700';
-  return 'bg-red-50 text-red-400';
+  return 'bg-rose-50 text-rose-400';
 }
 
 function fmt(pct: number): string {
@@ -34,6 +34,9 @@ function fmt(pct: number): string {
   if (pct >= 1) return pct.toFixed(2) + '%';
   return pct.toFixed(3) + '%';
 }
+
+// Medalhas para o pódio da ordenação atual.
+const MEDALS = ['🥇', '🥈', '🥉'];
 
 export function ResultsTable({
   columns,
@@ -79,19 +82,19 @@ export function ResultsTable({
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow-md overflow-hidden">
-      <div className="p-4 border-b border-gray-100">
-        <h2 className="text-lg font-bold text-copa-dark">
-          Probabilidades por Seleção
+    <div className="card-fest overflow-hidden animate-pop-in">
+      <div className="p-4 border-b-2 border-copa-gold/30">
+        <h2 className="font-display text-xl tracking-wide text-copa-dark">
+          📊 Probabilidades por Seleção
         </h2>
-        <p className="text-xs text-gray-500 mt-0.5">
+        <p className="text-xs text-copa-dark/60 mt-0.5">
           Clique no cabeçalho para ordenar
         </p>
       </div>
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="bg-copa-dark text-white">
+            <tr className="bg-gradient-to-r from-copa-dark to-copa-blue text-white">
               <th className="text-left px-3 py-3 sticky left-0 bg-copa-dark z-10 min-w-[160px]">
                 Seleção
               </th>
@@ -99,7 +102,7 @@ export function ResultsTable({
                 <th
                   key={c.key}
                   onClick={() => handleSort(c.key)}
-                  className="px-3 py-3 text-right cursor-pointer hover:bg-gray-700 whitespace-nowrap select-none"
+                  className="px-3 py-3 text-right cursor-pointer hover:bg-white/15 whitespace-nowrap select-none transition-colors"
                 >
                   <span className="hidden sm:inline">{c.label}</span>
                   <span className="sm:hidden">{c.short}</span>
@@ -112,11 +115,12 @@ export function ResultsTable({
             {rows.map((r, pos) => (
               <tr
                 key={r.idx}
-                className={`border-b border-gray-50 hover:bg-gray-50 transition-colors ${
-                  pos < 3 ? 'border-l-4 border-l-copa-gold' : ''
+                className={`border-b border-copa-dark/5 hover:bg-copa-gold/10 transition-colors ${
+                  pos < 3 ? 'border-l-4 border-l-copa-gold bg-copa-gold/5' : ''
                 }`}
               >
                 <td className="px-3 py-2 sticky left-0 bg-white font-medium text-copa-dark whitespace-nowrap">
+                  {pos < 3 && <span className="mr-1">{MEDALS[pos]}</span>}
                   <span className="mr-2 text-base">{r.flag}</span>
                   {r.name}
                   {r.isEstimate && (

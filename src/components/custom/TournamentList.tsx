@@ -87,9 +87,9 @@ export function TournamentList({
 
   return (
     <main className="max-w-5xl mx-auto px-4 py-6 flex flex-col gap-5">
-      <div className="bg-white rounded-2xl shadow-md p-4">
-        <h2 className="text-lg font-bold text-copa-dark mb-1">Torneio Customizado</h2>
-        <p className="text-xs text-gray-500 leading-relaxed">
+      <div className="card-fest p-4 border-l-8 border-l-copa-gold">
+        <h2 className="font-display text-xl tracking-wide text-copa-dark mb-1">🛠️ Torneio Customizado</h2>
+        <p className="text-xs text-copa-dark/60 leading-relaxed">
           Monte sua própria Copa (Copa 2002, 2010 ou outro formato qualquer) escolhendo times,
           parâmetros e grupos. Os torneios vivem apenas nesta sessão — use{' '}
           <strong>Exportar JSON</strong> para guardar e <strong>Importar</strong> para recarregar.
@@ -101,7 +101,7 @@ export function TournamentList({
           onClick={() => {
             handleTemplate('blank32');
           }}
-          className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-copa-red text-white font-extrabold hover:bg-red-700 shadow-sm"
+          className="btn-fest-red flex items-center gap-2 px-4 py-2.5"
         >
           <Plus className="w-4 h-4" />
           Novo Torneio
@@ -110,7 +110,7 @@ export function TournamentList({
         <div className="relative">
           <button
             onClick={() => setShowTemplates(s => !s)}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-copa-gold text-white font-bold hover:bg-yellow-500 shadow-sm"
+            className="btn-fest-gold flex items-center gap-2 px-4 py-2.5"
           >
             <Sparkles className="w-4 h-4" />
             Templates ▾
@@ -132,7 +132,7 @@ export function TournamentList({
 
         <button
           onClick={() => fileInputRef.current?.click()}
-          className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white border border-gray-200 text-copa-dark font-bold hover:border-copa-dark"
+          className="btn-fest-ghost flex items-center gap-2 px-4 py-2.5"
         >
           <FileUp className="w-4 h-4" />
           Importar JSON
@@ -153,9 +153,9 @@ export function TournamentList({
       )}
 
       {tournaments.length === 0 ? (
-        <div className="text-center py-12 text-gray-400">
-          <p className="text-5xl mb-3">🛠️</p>
-          <p className="text-base font-medium">
+        <div className="card-fest text-center py-12 text-copa-dark/50 animate-pop-in">
+          <p className="text-6xl mb-3 animate-bounce-soft inline-block">🛠️</p>
+          <p className="text-base font-bold">
             Crie seu primeiro torneio: clique em{' '}
             <strong className="text-copa-red">Novo Torneio</strong> ou{' '}
             <strong className="text-copa-gold">Templates</strong>.
@@ -166,16 +166,16 @@ export function TournamentList({
           {tournaments.map(t => (
             <article
               key={t.id}
-              className="bg-white rounded-2xl shadow-md p-4 flex flex-col gap-2"
+              className="card-fest p-4 flex flex-col gap-2 border-t-4 border-t-copa-gold transition-transform hover:scale-[1.01]"
             >
-              <h3 className="font-bold text-copa-dark text-base truncate">{t.name}</h3>
-              <p className="text-xs text-gray-500 font-mono">
+              <h3 className="font-display text-lg tracking-wide text-copa-dark truncate">🏆 {t.name}</h3>
+              <p className="text-xs text-copa-dark/60 font-mono">
                 {t.modelId} · {t.teams.length} times · {t.groups.length} grupos
               </p>
               <div className="flex flex-wrap gap-1.5 mt-1">
                 <button
                   onClick={() => onSimulate(t.id)}
-                  className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-copa-red text-white text-xs font-bold hover:bg-red-700"
+                  className="btn-fest-red flex items-center gap-1 px-3 py-1.5 text-xs !rounded-lg"
                 >
                   <PlayCircle className="w-3.5 h-3.5" /> Simular
                 </button>

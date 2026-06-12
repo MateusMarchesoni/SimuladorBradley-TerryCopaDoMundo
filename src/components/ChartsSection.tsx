@@ -16,17 +16,17 @@ interface Props {
 type Tab = 'top10' | 'fases' | 'pizza';
 
 const PHASE_COLORS: Record<string, string> = {
-  'Classificado': '#06A77D',
-  'Oitavas':      '#3B82F6',
+  'Classificado': '#00B874',
+  'Oitavas':      '#2D7DFF',
   'Quartas':      '#8B5CF6',
   'Semifinal':    '#F59E0B',
-  'Final':        '#EF4444',
+  'Final':        '#FF2E63',
   'Campeão':      '#FFB703',
 };
 
 const PIE_COLORS = [
-  '#FFB703', '#E63946', '#06A77D', '#3B82F6',
-  '#8B5CF6', '#F59E0B', '#EF4444', '#10B981', '#9CA3AF',
+  '#FFB703', '#FF2E63', '#00B874', '#2D7DFF',
+  '#8B5CF6', '#F59E0B', '#FF6B35', '#10B981', '#9CA3AF',
 ];
 
 function fmt(v: number): string {
@@ -69,7 +69,7 @@ function Top10Chart({ stats, teams }: { stats: UnifiedStats; teams: TeamView[] }
             {data.map((_, i) => (
               <Cell
                 key={i}
-                fill={i === data.length - 1 ? '#FFB703' : i >= data.length - 3 ? '#E63946' : '#06A77D'}
+                fill={i === data.length - 1 ? '#FFB703' : i >= data.length - 3 ? '#FF2E63' : '#00B874'}
               />
             ))}
           </Bar>
@@ -185,18 +185,18 @@ export function ChartsSection({ stats, teamsByIndex }: Props) {
   ];
 
   return (
-    <div className="bg-white rounded-2xl shadow-md overflow-hidden">
-      <div className="p-4 border-b border-gray-100">
-        <h2 className="text-lg font-bold text-copa-dark mb-3">Visualizações</h2>
+    <div className="card-fest overflow-hidden animate-pop-in">
+      <div className="p-4 border-b-2 border-copa-gold/30">
+        <h2 className="font-display text-xl tracking-wide text-copa-dark mb-3">📈 Visualizações</h2>
         <div className="flex gap-2 flex-wrap">
           {TABS.map(t => (
             <button
               key={t.id}
               onClick={() => setTab(t.id)}
-              className={`px-4 py-2 rounded-xl text-sm font-semibold transition-colors ${
+              className={`px-4 py-2 rounded-full text-sm font-bold transition-all duration-200 ${
                 tab === t.id
-                  ? 'bg-copa-dark text-white'
-                  : 'bg-gray-100 text-copa-dark hover:bg-gray-200'
+                  ? 'bg-gradient-to-r from-copa-blue to-copa-purple text-white shadow-md scale-[1.04]'
+                  : 'bg-white/80 text-copa-dark border border-copa-dark/10 hover:border-copa-blue hover:scale-[1.02]'
               }`}
             >
               {t.label}

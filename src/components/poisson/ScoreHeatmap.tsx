@@ -12,16 +12,16 @@ interface Props {
 function cellColor(freq: number, maxFreq: number): string {
   if (maxFreq === 0) return 'rgb(248, 250, 252)';
   const t = Math.min(freq / maxFreq, 1);
-  // branco-pálido → laranja → vermelho copa (#E63946)
-  const r = Math.round(255 - (255 - 230) * t);
-  const g = Math.round(255 - (255 - 57) * t);
-  const b = Math.round(255 - (255 - 70) * t);
+  // branco-pálido → rosa → vermelho copa (#FF2E63)
+  const r = 255;
+  const g = Math.round(255 - (255 - 46) * t);
+  const b = Math.round(255 - (255 - 99) * t);
   return `rgb(${r}, ${g}, ${b})`;
 }
 
 function textColor(freq: number, maxFreq: number): string {
   if (maxFreq === 0) return '#9CA3AF';
-  return freq / maxFreq > 0.55 ? '#FFFFFF' : '#1D1D1D';
+  return freq / maxFreq > 0.55 ? '#FFFFFF' : '#12275A';
 }
 
 export function ScoreHeatmap({
@@ -40,10 +40,10 @@ export function ScoreHeatmap({
   }
 
   return (
-    <div className="bg-white rounded-2xl shadow-md p-5">
+    <div className="card-fest p-5 animate-pop-in">
       <div className="mb-3">
-        <h3 className="text-base font-bold text-copa-dark">Mapa de calor de placares</h3>
-        <p className="text-xs text-gray-500 mt-0.5">
+        <h3 className="font-display text-lg tracking-wide text-copa-dark">🔥 Mapa de calor de placares</h3>
+        <p className="text-xs text-copa-dark/60 mt-0.5">
           Frequência relativa de cada placar nas {totalSamples.toLocaleString('pt-BR')} simulações.
           Linhas: gols de {teamAName}. Colunas: gols de {teamBName}.
         </p>
